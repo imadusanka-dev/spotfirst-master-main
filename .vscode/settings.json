@@ -1,0 +1,9 @@
+{
+  "editor.formatOnSave": true,
+  "scss.lint.unknownAtRules": "ignore",
+  "scss.validate": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

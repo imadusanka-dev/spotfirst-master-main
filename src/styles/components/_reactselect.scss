@@ -1,0 +1,108 @@
+.multiselect {
+  &__control {
+    border-radius: theme('borderRadius[lg]') !important;
+    border-color: transparent !important;
+    background-color: theme('backgroundColor[gray[50]]') !important;
+    font-size: theme('fontSize[sm]');
+    padding: 1.5px theme('padding[1]');
+    transition: theme('transitionProperty[all]')
+      theme('transitionDuration[150]');
+
+    &--menu-is-open {
+      box-shadow: 0 0 0 1px theme('colors[blue[200]]') !important;
+      border-color: transparent !important;
+    }
+
+    &--is-focused {
+      box-shadow: 0 0 0 1px theme('colors[blue[200]]') !important;
+      border-color: transparent !important;
+    }
+  }
+
+  &__menu {
+    box-shadow: theme('boxShadow.normal') !important;
+    border-radius: theme('borderRadius[lg]') !important;
+  }
+
+  &__option {
+    font-size: theme('fontSize[sm]') !important;
+  }
+
+  &__menu-notice--no-options {
+    font-size: theme('fontSize[sm]') !important;
+  }
+
+  &__indicator-separator {
+    display: none;
+  }
+
+  &__multi-value {
+    border-radius: theme('borderRadius[md]') !important;
+    @apply bg-primary-blue bg-opacity-20 #{!important};
+  }
+
+  &__multi-value__label {
+    padding: 4px 10px !important;
+  }
+
+  &__multi-value__remove {
+    overflow: hidden;
+    border-radius: theme('borderRadius[md]') !important;
+  }
+}
+
+.react-select {
+  &__control {
+    border-radius: theme('borderRadius[lg]') !important;
+    border-color: transparent !important;
+    background-color: theme('backgroundColor[slate[100]]') !important;
+    font-size: theme('fontSize[sm]');
+    padding: 1.5px theme('padding[1]');
+    transition: theme('transitionProperty[all]')
+      theme('transitionDuration[150]');
+
+    &--menu-is-open {
+      box-shadow: 0 0 0 1px transparent !important;
+      border-color: transparent !important;
+    }
+
+    &--is-focused {
+      box-shadow: 0 0 0 1px transparent !important;
+      border-color: transparent !important;
+    }
+  }
+
+  &__single-value {
+    color: theme('colors[slate[600]]') !important;
+  }
+
+  &__menu {
+    margin-bottom: 30px !important;
+    padding: 4px !important;
+    box-shadow: theme('boxShadow.normal') !important;
+    border-radius: theme('borderRadius[lg]') !important;
+  }
+
+  &__option {
+    margin: 2px 0 !important;
+    border-radius: theme('borderRadius[lg]') !important;
+    font-size: theme('fontSize[sm]') !important;
+    color: theme('colors[slate[500]]') !important;
+    cursor: pointer !important;
+
+    &--is-selected {
+      background-color: theme('colors[slate[50]]') !important;
+    }
+    &--is-focused {
+      background-color: theme('colors[slate[100]]') !important;
+    }
+  }
+
+  &__menu-notice--no-options {
+    font-size: theme('fontSize[sm]') !important;
+  }
+
+  &__indicator-separator {
+    display: none;
+  }
+}

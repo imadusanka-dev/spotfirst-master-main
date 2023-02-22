@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+// components
+@import 'components/wavesurfer';
+@import 'components/datepicker';
+@import 'components/reactselect';
+
+html,
+body {
+  font-family: 'Roboto', sans-serif;
+  scroll-behavior: smooth;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+  font-family: 'Rubik', sans-serif;
+}
+
+/* register page */
+.register-type-box-gradient-1 {
+  background: rgb(25, 128, 245);
+  background: linear-gradient(
+    320deg,
+    rgba(25, 128, 245, 1) 0%,
+    rgba(63, 67, 201, 1) 100%
+  );
+}
+
+.register-type-box-gradient-2 {
+  background: rgb(8, 168, 129);
+  background: linear-gradient(
+    320deg,
+    rgba(8, 168, 129, 1) 28%,
+    rgba(25, 128, 245, 1) 100%
+  );
+}
+
+.register-type-box-gradient-3 {
+  background: rgb(139, 18, 216);
+  background: linear-gradient(
+    320deg,
+    rgba(139, 18, 216, 1) 0%,
+    rgba(201, 63, 192, 1) 100%
+  );
+}
+
+.register-type-box-gradient-4 {
+  background: rgb(238, 183, 57);
+  background: linear-gradient(
+    320deg,
+    rgba(238, 183, 57, 1) 0%,
+    rgba(201, 122, 63, 1) 100%
+  );
+}
+
+// login page
+.login-bg::before {
+  content: '';
+  width: 100%;
+  position: fixed;
+  height: 100%;
+  bottom: -300px;
+  background: url('/svgs/login-bg.svg');
+}
+
+.app-layout-scroll-view {
+  min-height: calc(100% - 80px);
+  padding-bottom: 80px;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: rgba(#000000, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(#000000, 0.2);
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(#000000, 0.3);
+  }
+}
+
+.result-message {
+  line-height: 22px;
+  font-size: 16px;
+}
+
+.result-message a {
+  color: rgb(89, 111, 214);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hidden {
+  display: none;
+}
+
+#card-element {
+  border-radius: 4px 4px 0 0;
+  padding: 12px;
+  border: 1px solid rgba(50, 50, 93, 0.1);
+  max-height: 44px;
+  width: 100%;
+  background: white;
+  box-sizing: border-box;
+}
+
+.card-error {
+  color: rgb(255, 89, 89);
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 12px;
+  text-align: center;
+}
