@@ -29,7 +29,7 @@ export const PreviousSubmissions = () => {
   })
 
   useEffect(() => {
-    ARTIST_API.previousSubmissions(1, 10)
+    ARTIST_API.previousSubmissions(1, 30)
       .then((res) => {
         setSubmissions({
           data: res.payload,

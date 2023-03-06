@@ -13,7 +13,8 @@ const BottomSpotifyPlayer = () => {
   const getAccessToken = () => {
     refreshAccessToken()
       .then((response) => {
-        setToken(response.data?.access_token)
+        // setToken(response.data?.access_token)
+        setToken(response?.access_token)
       })
       .catch((error) => {
         console.log(error)

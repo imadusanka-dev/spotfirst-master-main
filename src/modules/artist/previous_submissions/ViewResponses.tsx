@@ -10,7 +10,6 @@ import { ARTIST_API } from 'data'
 import { Submission } from 'core/types'
 import dayjs from 'dayjs'
 import Image from 'next/legacy/image'
-import { SpinnerCircular } from 'spinners-react'
 
 interface ViewResponsesProps {
   parentId: number
@@ -23,13 +22,11 @@ export const ViewResponses: FC<ViewResponsesProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [submissions, setSubmissions] = useState<Submission[]>([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (parentId) {
       ARTIST_API.previousSubmissionsOfSong(parentId, 1, 10).then((res) => {
         setSubmissions(res.payload)
-        setLoading(false)
       })
     }
   }, [parentId])
@@ -45,24 +42,13 @@ export const ViewResponses: FC<ViewResponsesProps> = ({
   return (
     <>
       <button
-        disabled={loading}
         onClick={openModal}
         className={classNames(
-          loading ? 'px-0.5' : 'px-2',
+          'px-2',
           'py-0.5 text-xs transition-all duration-300 text-white bg-primary-blue rounded-button'
         )}
       >
-        {loading ? (
-          <div className="flex space-x-2 items-center">
-            <SpinnerCircular
-              size={18}
-              secondaryColor={'#aaffffff'}
-              color="#fff"
-            />
-          </div>
-        ) : (
-          <span>View</span>
-        )}
+        <span>View</span>
       </button>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog

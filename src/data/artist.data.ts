@@ -14,7 +14,11 @@ export default {
         },
       })
       .then((res) => res.data),
-  previousSubmissionsOfSong: (page: number, pageSize: number) => {
+  previousSubmissionsOfSong: (
+    parentId: number,
+    page: number,
+    pageSize: number
+  ) => {
     const params = {
       page,
       pageSize,

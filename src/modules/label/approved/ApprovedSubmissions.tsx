@@ -14,7 +14,7 @@ export const ApprovedSubmissions = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    LABEL_API.approvedSubmissions(1, 20)
+    LABEL_API.approvedSubmissions(1, 30)
       .then((res) => {
         setApprovedSubmissions(res.payload)
         setLoading(false)
