@@ -7,33 +7,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Dialog, Transition } from '@headlessui/react'
 
-import { FC, Fragment, useState } from 'react'
+import { FC, Fragment, useState, useEffect } from 'react'
 import { AlertCircle } from 'react-feather'
 import { Helmet } from 'react-helmet'
 import { Submission } from 'core/types'
 import { ApproveRejectSubmission } from './ApproveRejectSubmission'
 import { NewSubmissionSongInfo } from './NewSubmissionSongInfo'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
-
-// TODO fetch from data
-const previous_submission = [
-  {
-    title: 'Vibe With You',
-    isApproved: true,
-  },
-  {
-    title: 'Vibe With You',
-    isApproved: true,
-  },
-  {
-    title: 'Vibe With You',
-    isApproved: true,
-  },
-  {
-    title: 'Vibe With You',
-    isApproved: true,
-  },
-]
+import { ARTIST_API } from 'data'
+import { getSocialMediaUrl } from '../../../../utils/helpers'
 
 interface NewSubmissionReviewPopupProps {
   submission: Submission
@@ -44,6 +26,13 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [action, setAction] = useState<'IDLE' | 'APPROVE' | 'REJECT'>('IDLE')
+  const [previousSubmissions, setPreviousSubmissions] = useState([])
+
+  useEffect(() => {
+    ARTIST_API.previousSubmissionsByArtistId(1, 4, submission.userId._id)
+      .then((response) => setPreviousSubmissions(response.payload))
+      .catch((error) => console.log(error))
+  }, [submission.userId._id])
 
   function closeModal() {
     setIsOpen(false)
@@ -51,6 +40,30 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
 
   function openModal() {
     setIsOpen(true)
+  }
+
+  const getSocialIcons = () => {
+    const links = getSocialMediaUrl(submission.userId?.links)
+
+    return (
+      <div className="grid grid-cols-3 gap-4 mt-3">
+        <a href={links?.facebook || ''} target="_blank" rel="noreferrer">
+          <button className="text-white bg-primary-blue min-w[30px] w-[30px] rounded-full h-[30px]">
+            <FontAwesomeIcon icon={faFacebook as IconProp} />
+          </button>
+        </a>
+        <a href={links?.instagram || ''} target="_blank" rel="noreferrer">
+          <button className="text-white bg-primary-blue min-w[30px] w-[30px] rounded-full h-[30px]">
+            <FontAwesomeIcon icon={faInstagram as IconProp} />
+          </button>
+        </a>
+        <a href={links?.spotify || ''} target="_blank" rel="noreferrer">
+          <button className="text-white bg-primary-blue min-w[30px] w-[30px] rounded-full h-[30px]">
+            <FontAwesomeIcon icon={faSpotify as IconProp} />
+          </button>
+        </a>
+      </div>
+    )
   }
 
   return (
@@ -110,21 +123,11 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                           className="w-40 min-w-[160px] relative h-40 rounded-full bg-primary-blue"
                         />
                         <h4 className="pt-4 text-lg font-medium">
-                          {submission.artistName}
+                          {submission.userId?.name}
                         </h4>
 
                         {/* ------ social icons ----- */}
-                        <div className="grid grid-cols-3 gap-4 mt-3">
-                          <button className="text-white bg-primary-blue min-w[30px] w-[30px] rounded-full h-[30px]">
-                            <FontAwesomeIcon icon={faFacebook as IconProp} />
-                          </button>
-                          <button className="text-white bg-primary-blue min-w[30px] w-[30px] rounded-full h-[30px]">
-                            <FontAwesomeIcon icon={faInstagram as IconProp} />
-                          </button>
-                          <button className="text-white bg-primary-blue min-w[30px] w-[30px] rounded-full h-[30px]">
-                            <FontAwesomeIcon icon={faSpotify as IconProp} />
-                          </button>
-                        </div>
+                        {getSocialIcons()}
 
                         {/* -------- artist bio secion --------- */}
                         <div className="py-4">
@@ -159,24 +162,24 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                         <div className="w-full">
                           <h5>Previous Submissions</h5>
                           <ul className="mt-4 space-y-2">
-                            {previous_submission.map((item, index) => {
+                            {previousSubmissions.map((item, index) => {
                               return (
                                 <li key={index}>
                                   <div className="flex items-center">
-                                    <div className="w-10 h-10 mr-2 min-w-[40px] min-h-[40px] bg-primary-blue rounded-md"></div>
+                                    <div className="w-10 h-10 mr-2 min-w-[40px] min-h-[40px] bg-primary-blue rounded-md">
+                                      <Image
+                                        src={item.imageUrl}
+                                        width={40}
+                                        height={40}
+                                      />
+                                    </div>
                                     <div className="flex flex-col">
                                       <div className="text-xs">
-                                        {item.title}
+                                        {item.trackTitle}
                                       </div>
-                                      {item.isApproved ? (
-                                        <span className="text-xs text-primary-blue">
-                                          Approved
-                                        </span>
-                                      ) : (
-                                        <span className="text-xs text-orange-600">
-                                          Not Approved
-                                        </span>
-                                      )}
+                                      <span className="text-xs text-primary-blue capitalize">
+                                        {item.status.toLowerCase()}
+                                      </span>
                                     </div>
                                   </div>
                                 </li>

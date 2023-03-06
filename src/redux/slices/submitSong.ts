@@ -83,6 +83,8 @@ export interface SubmitSongState {
   curators: string[]
   errors: { field: string; message: string }[]
   curatorGenresFilter: string[]
+  curatorRatingsFilter: number[]
+  curatorPriceFilter: number
 }
 
 const tabs = [
@@ -141,6 +143,8 @@ const internalInitialState: SubmitSongState = {
   curators: [],
   errors: [],
   curatorGenresFilter: [],
+  curatorRatingsFilter: [],
+  curatorPriceFilter: 20,
 }
 
 export const submitSongSlice = createSlice({
@@ -296,6 +300,12 @@ export const submitSongSlice = createSlice({
     setCuratorGenresFilter(state, action: PayloadAction<string[]>) {
       state.curatorGenresFilter = action.payload
     },
+    setCuratorRatingsFilter(state, action: PayloadAction<number[]>) {
+      state.curatorRatingsFilter = action.payload
+    },
+    setCuratorPriceFilter(state, action: PayloadAction<number>) {
+      state.curatorPriceFilter = action.payload
+    },
     resetSelectedCurators(state) {
       state.curators = []
     },
@@ -344,5 +354,7 @@ export const {
   resetLinkSubmitData,
   reSubmit,
   setCuratorGenresFilter,
+  setCuratorRatingsFilter,
+  setCuratorPriceFilter,
   resetSelectedCurators,
 } = submitSongSlice.actions

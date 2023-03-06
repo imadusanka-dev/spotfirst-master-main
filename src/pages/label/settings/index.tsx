@@ -22,13 +22,19 @@ import { SocialSettings } from 'modules/common/SocialSettings'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpotify } from '@fortawesome/free-brands-svg-icons'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
+import Select from 'components/Select/Select'
 import axios from 'axios'
-import Cookies from 'cookies'
 
 const tabs = [
   { name: 'General', href: 'general', current: true },
   { name: 'Genres', href: 'genres', current: false },
   { name: 'Availability', href: 'availability', current: false },
+]
+
+const options = [
+  { value: '1', label: '1 Token' },
+  { value: '2', label: '2 Tokens' },
+  { value: '3', label: '3 Tokens' },
 ]
 
 const transitionProps: MotionProps = {
@@ -60,6 +66,7 @@ const SettingsPage = () => {
         name,
         description: profile.description,
         genres: profile.genres,
+        links: profile.social,
       })
 
       if (res.success) {
@@ -78,6 +85,7 @@ const SettingsPage = () => {
         name: profile.name,
         description,
         genres: profile.genres,
+        links: profile.social,
       })
 
       if (res.success) {
@@ -219,6 +227,47 @@ const SettingsPage = () => {
                     </dt>
                     <dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                       <span className="flex-grow">English</span>
+                      <span className="flex-shrink-0 ml-4">
+                        <button
+                          type="button"
+                          className="font-medium text-purple-600 bg-white rounded-md hover:text-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                        >
+                          Update
+                        </button>
+                      </span>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div className="mt-10 divide-y divide-gray-200">
+              <div className="space-y-1">
+                <h3 className="text-lg font-medium leading-6 text-gray-900">
+                  Pricing
+                </h3>
+                <p className="max-w-2xl text-sm text-gray-500">
+                  Manage your pricing plan.
+                </p>
+              </div>
+              <div className="mt-6">
+                <dl className="divide-y divide-gray-200">
+                  <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 flex items-center">
+                    <dt className="text-sm font-medium text-gray-500">
+                      Pricing Plan
+                    </dt>
+                    <dd className="flex mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 items-center">
+                      <span className="flex-grow">
+                        <div className="w-1/2">
+                          <Select
+                            options={options}
+                            defaultValue={options[0]}
+                            disabled={true}
+                          />
+                        </div>
+                      </span>
                       <span className="flex-shrink-0 ml-4">
                         <button
                           type="button"

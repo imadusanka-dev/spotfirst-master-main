@@ -17,6 +17,7 @@ export default {
         name: payload.name,
         description: payload.description,
         genres: payload.genres,
+        links: payload.links,
       })
       .then((res) => res.data),
   songMetadata: (url: string) => {

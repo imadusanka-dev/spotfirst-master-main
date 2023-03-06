@@ -180,6 +180,8 @@ const StepThree = () => {
                 selectedSorting={selectedSorting}
                 setSelectedSorting={setSelectedSorting}
                 genreFilter={state.curatorGenresFilter}
+                ratingFilter={state.curatorRatingsFilter}
+                priceFilter={state.curatorPriceFilter}
               />
             </motion.section>
           )}

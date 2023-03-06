@@ -28,4 +28,17 @@ export default {
       )
       .then((res) => res.data)
   },
+  previousSubmissionsByArtistId: (
+    page: number,
+    pageSize: number,
+    artistId: string
+  ) =>
+    api
+      .get<BaseResponse<Array<Submission>>>(`/submissions/${artistId}`, {
+        params: {
+          page,
+          pageSize,
+        },
+      })
+      .then((res) => res.data),
 }

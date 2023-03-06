@@ -10,12 +10,14 @@ interface ReactSelectProps {
   options: OptionsOrGroups<any, GroupBase<any>>
   onChange?: (newValue: SingleValue<any>, actionMeta: ActionMeta<any>) => void
   defaultValue: any
+  disabled?: boolean
 }
 
 const ReactSelect: FC<ReactSelectProps> = ({
   options,
   onChange,
   defaultValue,
+  disabled,
 }) => {
   return (
     <Select
@@ -23,6 +25,7 @@ const ReactSelect: FC<ReactSelectProps> = ({
       classNamePrefix="react-select"
       onChange={onChange}
       options={options}
+      isDisabled={disabled}
     />
   )
 }

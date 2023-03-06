@@ -13,6 +13,8 @@ export interface ICuratorFilterRequest {
     value: string
   }[]
   genres?: string[]
+  pricing: number
+  ratings?: number[]
 }
 
 export interface ICuratorAvailabilityUpdate {
@@ -31,6 +33,8 @@ export default {
     sortField,
     filters,
     genres,
+    pricing,
+    ratings,
   }: ICuratorFilterRequest) =>
     api
       .post<BaseResponse<Curator[]>>('/curator/filter', {
@@ -40,6 +44,8 @@ export default {
         sortField: sortField,
         filters: filters,
         genres,
+        pricing,
+        ratings,
       })
       .then((res) => res.data),
   updateCuratorAvailable: (data: ICuratorAvailabilityUpdate) =>

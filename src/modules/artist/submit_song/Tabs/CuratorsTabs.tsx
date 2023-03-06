@@ -34,6 +34,8 @@ interface Props {
   onSelectAll: (curators: string[]) => void
   selectedCurators: string[]
   genreFilter: string[]
+  ratingFilter: number[]
+  priceFilter: number
 }
 
 const CuratorsTab = ({
@@ -44,6 +46,8 @@ const CuratorsTab = ({
   onSelectAll,
   selectedCurators,
   genreFilter,
+  ratingFilter,
+  priceFilter,
 }: Props) => {
   const [curators, setCurators] = useState<{
     data: Curator[]
@@ -56,15 +60,21 @@ const CuratorsTab = ({
     //reset selected curators when filter is changed
     dispatch(resetSelectedCurators())
 
-    CURATOR_API.curatorFilter({ page: 1, perPage: 10, genres: genreFilter })
+    CURATOR_API.curatorFilter({
+      page: 1,
+      perPage: 10,
+      genres: genreFilter,
+      ratings: ratingFilter,
+      pricing: priceFilter,
+    })
       .then((res) => {
         setCurators({
           data: res.payload,
           isFetching: false,
         })
       })
-      .catch(console.log)
-  }, [genreFilter])
+      .catch((error) => console.log(error))
+  }, [genreFilter, ratingFilter, priceFilter])
 
   useEffect(() => {
     if (selectAllChecked) {
@@ -257,7 +267,7 @@ const CuratorsTab = ({
                       <div className="truncate">
                         <div className="flex">
                           <div className="flex items-center">
-                            <div className="mt-6">
+                            <div className="mt-6 mr-2">
                               <input
                                 id="select_curator"
                                 name="select_curator"
@@ -266,9 +276,11 @@ const CuratorsTab = ({
                                 onChange={(event) =>
                                   onChange(event.target.checked, curator._id)
                                 }
-                                className="w-5 h-5 mr-2 rounded-md border-gray-50 focus:ring-primary-blue text-primary-blue"
+                                className="w-5 h-5 ml-4 rounded-md border-gray-50 focus:ring-primary-blue text-primary-blue"
                               />
-                              <div className="text-xs">0.8</div>
+                              <div className="text-xs px-2 py-1 text-sm rounded-full bg-primary-blue bg-opacity-10 text-primary-blue-dark">
+                                1 token
+                              </div>
                             </div>
                             <Image
                               src={curator.user[0]?.profilePicture}

@@ -8,6 +8,8 @@ import SubmitSongSteps from 'modules/artist/submit_song/SubmitSongSteps'
 import StepOne from 'modules/artist/submit_song/Steps/StepOne'
 import StepTwo from 'modules/artist/submit_song/Steps/StepTwo'
 import GenresFilter from 'modules/artist/submit_song/GenresFilter'
+import RatingsFilter from 'modules/artist/submit_song/RatingsFilter'
+import PriceFilter from 'modules/artist/submit_song/Tabs/PriceFilter'
 import { useAppSelector } from 'core/hooks/useRedux'
 import { ROLE } from 'core/types'
 import StepThree from 'modules/artist/submit_song/Steps/StepThree'
@@ -56,21 +58,21 @@ const SubmitSongPage = () => {
                     </>
                   )}
                 </Disclosure>
-                <Disclosure as="div" className="mt-2">
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left rounded-lg bg-blue-50 text-primary-blue hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-prtext-primary-blue focus-visible:ring-opacity-75">
-                        <span>Type</span>
-                        <ChevronUpIcon
-                          className={`${
-                            open ? 'transform rotate-180' : ''
-                          } w-5 h-5 text-primary-blue`}
-                        />
-                      </Disclosure.Button>
-                      <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500"></Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
+                {/*<Disclosure as="div" className="mt-2">*/}
+                {/*  {({ open }) => (*/}
+                {/*    <>*/}
+                {/*      <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left rounded-lg bg-blue-50 text-primary-blue hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-prtext-primary-blue focus-visible:ring-opacity-75">*/}
+                {/*        <span>Type</span>*/}
+                {/*        <ChevronUpIcon*/}
+                {/*          className={`${*/}
+                {/*            open ? 'transform rotate-180' : ''*/}
+                {/*          } w-5 h-5 text-primary-blue`}*/}
+                {/*        />*/}
+                {/*      </Disclosure.Button>*/}
+                {/*      <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500"></Disclosure.Panel>*/}
+                {/*    </>*/}
+                {/*  )}*/}
+                {/*</Disclosure>*/}
                 {/*<Disclosure as="div" className="mt-2">*/}
                 {/*  {({ open }) => (*/}
                 {/*    <>*/}
@@ -97,7 +99,9 @@ const SubmitSongPage = () => {
                           } w-5 h-5 text-primary-blue`}
                         />
                       </Disclosure.Button>
-                      <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500"></Disclosure.Panel>
+                      <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                        <PriceFilter />
+                      </Disclosure.Panel>
                     </>
                   )}
                 </Disclosure>
@@ -112,7 +116,9 @@ const SubmitSongPage = () => {
                           } w-5 h-5 text-primary-blue`}
                         />
                       </Disclosure.Button>
-                      <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500"></Disclosure.Panel>
+                      <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                        <RatingsFilter />
+                      </Disclosure.Panel>
                     </>
                   )}
                 </Disclosure>
