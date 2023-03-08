@@ -63,12 +63,14 @@ export const PreviousSubmissionItem: FC<PreviousSubmissionItemProps> = ({
                   </div>
                   <div className="flex items-center space-x-1">
                     <Star className="text-slate-500" size={14} />
-                    <p className="text-xs text-slate-500">Approved Rate</p>
+                    <p className="text-xs text-slate-500">Approved Rate: 50%</p>
                   </div>
 
                   <div className="flex items-center space-x-1">
                     <FileText className="text-slate-500" size={14} />
-                    <p className="text-xs text-slate-500">Total Submissions</p>
+                    <p className="text-xs text-slate-500">
+                      Total Submissions: 5
+                    </p>
                   </div>
                   <div className="flex items-center space-x-1">
                     <div className="flex space-x-1">

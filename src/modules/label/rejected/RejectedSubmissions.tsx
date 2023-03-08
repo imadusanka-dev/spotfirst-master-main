@@ -14,7 +14,7 @@ export const RejectedSubmissions = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    LABEL_API.declinedSubmissions(1, 10)
+    LABEL_API.declinedSubmissions(1, 30)
       .then((res) => {
         setRejectedSubmissions(res.payload)
         setLoading(false)

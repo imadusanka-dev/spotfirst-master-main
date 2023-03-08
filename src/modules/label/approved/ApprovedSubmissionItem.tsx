@@ -81,7 +81,7 @@ export const ApprovedSubmissionItem: FC<ApprovedSubmssionItemProps> = ({
             <div className="flex flex-col items-end space-y-3">
               <div>
                 <div className="flex px-4 text- py-1 rounded-full bg-primary-green bg-opacity-5 text-primary-green">
-                  ${submission.credits?.toFixed(1)}
+                  {/*${submission.credits?.toFixed(1)}*/}$ 0.8
                 </div>
               </div>
               <button className="px-4 text-sm py-1 transition-all duration-200 bg-primary-blue  rounded-full text-white">

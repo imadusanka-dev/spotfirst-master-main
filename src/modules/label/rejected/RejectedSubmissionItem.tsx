@@ -72,7 +72,7 @@ export const RejectedSubmissionItem: FC<RejectedSubmissionItemProps> = ({
             </div>
             <div className="flex flex-col items-end justify-start h-full space-y-3">
               <div className="flex px-4 py-1 rounded-full text-sm bg-primary-green bg-opacity-5 text-primary-green">
-                ${submission.credits?.toFixed(1)}
+                {/*${submission.credits?.toFixed(1)}*/}$ 0.8
               </div>
 
               <button className="px-4 text-sm py-1 transition-all duration-200 bg-primary-blue  rounded-full text-white">

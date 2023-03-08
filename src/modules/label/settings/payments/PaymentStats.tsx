@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 
 const stats = [
-  { name: 'Net Income', stat: '$0', color: 'register-type-box-gradient-1' },
+  { name: 'Net Income', stat: '$5.6', color: 'register-type-box-gradient-1' },
   {
     name: 'Withdrawn',
     stat: '$0',
@@ -9,10 +9,10 @@ const stats = [
   },
   {
     name: 'Pending Clearance',
-    stat: '$0',
+    stat: '$5.6',
     color: 'register-type-box-gradient-3 ',
   },
-  { name: 'Available', stat: '$0', color: 'register-type-box-gradient-4' },
+  { name: 'Available', stat: '$5.6', color: 'register-type-box-gradient-4' },
 ]
 
 const PaymentStats = () => {
