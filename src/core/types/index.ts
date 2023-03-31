@@ -16,13 +16,15 @@ export interface Submission {
   lastModifiedAt: string | null
   lastModifiedBy: string | null
   otherArtistsParticipated: boolean
+  artistAndVocalistsParticipate: string | null
   englishLyrics: boolean
   genres: string[]
+  mood: string[]
   message: string
   credits: number
-  curator: Curator
+  curators: Curator[]
   curatorId: string
-  userId: User
+  userId: string
   userEmail: string
   status: string
   approvalToToWhere: string[]
@@ -85,5 +87,3 @@ export interface Track {
   trackTitle: string
   platform: string | null
 }
-
-export interface Profile {}

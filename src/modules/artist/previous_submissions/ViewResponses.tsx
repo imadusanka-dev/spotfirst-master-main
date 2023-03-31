@@ -12,24 +12,22 @@ import dayjs from 'dayjs'
 import Image from 'next/legacy/image'
 
 interface ViewResponsesProps {
-  parentId: number
   submission: Submission
 }
 
-export const ViewResponses: FC<ViewResponsesProps> = ({
-  submission,
-  parentId,
-}) => {
+export const ViewResponses: FC<ViewResponsesProps> = ({ submission }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [submissions, setSubmissions] = useState<Submission[]>([])
 
   useEffect(() => {
-    if (parentId) {
-      ARTIST_API.previousSubmissionsOfSong(parentId, 1, 10).then((res) => {
-        setSubmissions(res.payload)
-      })
-    }
-  }, [parentId])
+    // if (submission._id) {
+    //   ARTIST_API.previousSubmissionsOfSong(submission._id, 1, 10).then(
+    //     (res) => {
+    //       setSubmissions(res.payload)
+    //     }
+    //   )
+    // }
+  }, [submission._id])
 
   function closeModal() {
     setIsOpen(false)
@@ -156,7 +154,7 @@ export const ViewResponses: FC<ViewResponsesProps> = ({
                             Submitted Date
                           </th>
                           <th className="hidden px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50 md:block">
-                            Update
+                            Scheduled Date
                           </th>
                           <th className="px-6 py-3 text-xs font-medium tracking-wider text-right text-gray-500 uppercase bg-gray-50">
                             Response
@@ -164,7 +162,7 @@ export const ViewResponses: FC<ViewResponsesProps> = ({
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {submissions.map((response, index) => (
+                        {submission.curators.map((response, index) => (
                           <ResponseItem key={index} response={response} />
                         ))}
                       </tbody>
@@ -223,7 +221,7 @@ const ResponseItem: FC<ResponseItemProps> = ({ response }) => {
           <div className="flex">
             <a className="inline-flex space-x-2 text-sm truncate group">
               <p className="text-gray-500 truncate group-hover:text-gray-900">
-                {response.curator.curatorName}
+                {response.curatorName}
               </p>
             </a>
           </div>
@@ -232,11 +230,7 @@ const ResponseItem: FC<ResponseItemProps> = ({ response }) => {
           {dayjs(response.createdAt).format('MMM DD, YYYY - hh:mm A')}
         </td>
         <td className="hidden px-6 py-4 text-sm text-gray-500 whitespace-nowrap md:block">
-          {response.status === 'APPROVED' && (
-            <button className="px-5 py-1 border-2 rounded-full border-primary-blue">
-              Ask for an Update
-            </button>
-          )}
+          N/A
         </td>
         <td className="px-6 py-4 text-sm text-right text-gray-500 whitespace-nowrap">
           <Button
@@ -248,7 +242,7 @@ const ResponseItem: FC<ResponseItemProps> = ({ response }) => {
               'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium capitalize'
             )}
           >
-            {response.status}
+            {response.songApproveStatuses}
           </Button>
         </td>
       </tr>

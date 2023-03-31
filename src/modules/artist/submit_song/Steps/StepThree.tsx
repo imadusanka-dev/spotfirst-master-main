@@ -6,6 +6,7 @@ import Link from 'next/link'
 import CuratorsTab from '../Tabs/CuratorsTabs'
 import { useAppDispatch, useAppSelector } from 'core/hooks/useRedux'
 import {
+  editSong,
   reset,
   setCurators,
   setStep,
@@ -20,7 +21,7 @@ const sortings = [
   { id: 2, name: 'Ratings: Low to High' },
 ]
 
-const StepThree = () => {
+const StepThree = ({ isEdit, submissionId }) => {
   const [selectedSorting, setSelectedSorting] = useState(sortings[0])
 
   const selectedCurators = useAppSelector(
@@ -51,8 +52,11 @@ const StepThree = () => {
       artistName: state.songInfo.artistName,
       songType: state.songInfo.type,
       otherArtistsParticipated: state.songInfo.otherArtistsParticipated,
+      artistAndVocalistsParticipate:
+        state.songInfo.artistAndVocalistsParticipate,
       englishLyrics: state.songInfo.englishLyrics,
       genres: state.songInfo.genres,
+      mood: state.songInfo.moods,
       message: state.songInfo.message,
       curators: state.curators,
       releasedDate: state.releasedDate,
@@ -91,15 +95,27 @@ const StepThree = () => {
       return toast.error('Audio/URL must be required')
     }
 
-    dispatch(submitSong({ data })).then(() => {
-      dispatch(reset())
-      if (authState.me.primaryRole === 'ROLE_ARTIST') {
-        router.push('/artist/previous-submissions')
-      }
-      if (authState.me.primaryRole === 'ROLE_LABEL') {
-        router.push('/label/previous-submissions')
-      }
-    })
+    if (isEdit) {
+      dispatch(editSong({ data, submissionId })).then(() => {
+        dispatch(reset())
+        if (authState.me.primaryRole === 'ROLE_ARTIST') {
+          router.push('/artist/previous-submissions')
+        }
+        if (authState.me.primaryRole === 'ROLE_LABEL') {
+          router.push('/label/previous-submissions')
+        }
+      })
+    } else {
+      dispatch(submitSong({ data })).then(() => {
+        dispatch(reset())
+        if (authState.me.primaryRole === 'ROLE_ARTIST') {
+          router.push('/artist/previous-submissions')
+        }
+        if (authState.me.primaryRole === 'ROLE_LABEL') {
+          router.push('/label/previous-submissions')
+        }
+      })
+    }
   }
 
   const tabValue = router.query['tab']

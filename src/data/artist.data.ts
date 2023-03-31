@@ -5,6 +5,10 @@ import { BaseResponse } from 'core/types/responses'
 export default {
   submitSong: (data: any) =>
     api.post<BaseResponse<null>>('/submit', data).then((res) => res.data),
+  editSong: (submissionId: string, data: any) =>
+    api
+      .put<BaseResponse<null>>(`/submit/${submissionId}`, data)
+      .then((res) => res.data),
   previousSubmissions: (page: number, pageSize: number) =>
     api
       .get<BaseResponse<Submission[]>>('/submissions', {
@@ -15,7 +19,7 @@ export default {
       })
       .then((res) => res.data),
   previousSubmissionsOfSong: (
-    parentId: number,
+    submissionId: string,
     page: number,
     pageSize: number
   ) => {
@@ -25,7 +29,7 @@ export default {
     }
     return api
       .get<BaseResponse<Array<Submission>>>(
-        `/submissions/previousSubmissionsOfSong`,
+        `/submissions/previousSubmissionsOfSong/${submissionId}`,
         {
           params,
         }

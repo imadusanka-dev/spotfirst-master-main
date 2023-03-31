@@ -1,6 +1,13 @@
 import AppLayout from 'core/layouts/AppLayout'
 import { ROLE } from 'core/types'
-import { FC, ReactElement, useEffect, useRef, useState } from 'react'
+import {
+  FC,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { Socket } from 'socket.io'
 import { useAppSelector } from 'core/hooks/useRedux'
 import Image from 'next/legacy/image'
@@ -41,13 +48,27 @@ const MessagesInbox = () => {
   const authState = useAppSelector((state) => state.authReducer)
 
   useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const res = await COMMON_API.getChatHistory(selectedUser?.id)
+        setChat((prevChat) => [...prevChat, ...res.payload])
+      } catch (error) {
+        toast.error('chat history error')
+      }
+    }
+
+    if (selectedUser?.id && authState?.me?.id) {
+      setChat([])
+      fetchChatHistory()
+    }
+  }, [selectedUser?.id, authState?.me?.id])
+
+  useEffect(() => {
     fetchChatUsers()
-    fetchChatHistory()
   }, [])
 
   useEffect(() => {
     setChat([])
-    fetchChatHistory()
   }, [selectedUser, selectedUser?.id, authState?.me?.id])
 
   useEffect(() => {
@@ -95,7 +116,7 @@ const MessagesInbox = () => {
     }
   }
 
-  const sendMessage = () => {
+  const sendMessage = useCallback(() => {
     if (msg && chatSocketConnection) {
       chatSocketConnection.emit('sendChat', {
         message: msg,
@@ -104,10 +125,10 @@ const MessagesInbox = () => {
       })
     }
     // focus after click
-    inputRef?.current?.focus()
+    inputRef.current.focus()
     // clear text field
     setMsg('')
-  }
+  }, [msg, chatSocketConnection, authState?.me?.id, selectedUser?.id])
 
   return (
     <div className="relative mx-auto md:px-8 xl:px-0">

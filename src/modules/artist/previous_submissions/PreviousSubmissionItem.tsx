@@ -5,9 +5,22 @@ import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { Disc, FileText, Star, User } from 'react-feather'
 import { useDispatch } from 'react-redux'
-import { reSubmit } from 'redux/slices/submitSong'
+import {
+  continueWithLinkSubmit,
+  reSubmit,
+  setReleasedDate,
+  setReleasedLabel,
+  setReleasedTrackEnabled,
+  setReleasedUnderLabelEnabled,
+  setSongInfo,
+  setUsingLink,
+  submitSong,
+  setOtherArtistsParticipated,
+  setCurators,
+} from 'redux/slices/submitSong'
 import { ViewResponses } from './ViewResponses'
 import { roleNameToPath } from 'core/utils'
+import Link from 'next/link'
 
 interface PreviousSubmissionItemProps {
   submission: Submission
@@ -22,6 +35,38 @@ export const PreviousSubmissionItem: FC<PreviousSubmissionItemProps> = ({
   const handleReSubmit = async (submission: Submission) => {
     dispatch(reSubmit(submission))
     router.push(`/${roleNameToPath(role)}/submit`)
+  }
+
+  const addSubmitSongData = () => {
+    dispatch(setReleasedTrackEnabled(!!submission.releasedDate))
+    submission.releasedDate &&
+      dispatch(setReleasedDate(new Date(submission.releasedDate)))
+    dispatch(setUsingLink(true))
+    dispatch(
+      continueWithLinkSubmit({
+        albumArt: submission.imageUrl,
+        songPreview: '',
+        songUrl: submission.songUrl,
+        name: submission.trackTitle,
+        artistName: submission.artistName,
+        songDuration: submission.duration,
+        uri: submission.url,
+      })
+    )
+    dispatch(setReleasedLabel(submission.label))
+    dispatch(setReleasedUnderLabelEnabled(!!submission.label))
+    dispatch(setOtherArtistsParticipated(submission.otherArtistsParticipated))
+    dispatch(
+      setSongInfo({
+        field: 'artistAndVocalistsParticipate',
+        value: submission.artistAndVocalistsParticipate,
+      })
+    )
+    dispatch(setSongInfo({ field: 'type', value: submission.songType }))
+    dispatch(setSongInfo({ field: 'genres', value: submission.genres }))
+    dispatch(setSongInfo({ field: 'moods', value: submission.mood }))
+    dispatch(setSongInfo({ field: 'message', value: submission.message }))
+    dispatch(setCurators(submission.curators.map((curator) => curator._id)))
   }
 
   return (
@@ -77,10 +122,7 @@ export const PreviousSubmissionItem: FC<PreviousSubmissionItemProps> = ({
                       <FileText className="text-slate-500" size={14} />
                       <p className="text-xs text-slate-500">Responses</p>
                     </div>
-                    <ViewResponses
-                      submission={submission}
-                      parentId={submission.parentId}
-                    />
+                    <ViewResponses submission={submission} />
                   </div>
                   {/* <div className="flex items-center space-x-1">
                           <CheckSquare className="text-slate-500" size={14} />
@@ -98,9 +140,16 @@ export const PreviousSubmissionItem: FC<PreviousSubmissionItemProps> = ({
               >
                 Submit
               </button>
-              <button className="px-4 text-sm py-1 transition-all duration-200 bg-slate-100  rounded-full text-slate-600">
-                Edit
-              </button>
+              <Link
+                href={`/artist/previous-submissions/edit/${submission._id}`}
+              >
+                <button
+                  className="px-4 text-sm py-1 transition-all duration-200 bg-slate-100  rounded-full text-slate-600"
+                  onClick={() => addSubmitSongData()}
+                >
+                  Edit
+                </button>
+              </Link>
             </div>
           </div>
         </div>

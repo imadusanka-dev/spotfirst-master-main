@@ -58,7 +58,7 @@ const CuratorsTab = ({
 
   useEffect(() => {
     //reset selected curators when filter is changed
-    dispatch(resetSelectedCurators())
+    // dispatch(resetSelectedCurators())
 
     CURATOR_API.curatorFilter({
       page: 1,

@@ -29,7 +29,7 @@ type SongInfo = {
   otherLanguage: string | null
   songUrl?: string | null
   songPreview?: string | null
-  songDuration?: string | null
+  songDuration?: number | null
   uri: string | null
 }
 
@@ -97,6 +97,20 @@ export const submitSong = createAsyncThunk(
   async (data: { data }, thunkAPI) => {
     try {
       const response = await ARTIST_API.submitSong(data.data)
+
+      return response
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error: error.message })
+    }
+  }
+)
+
+export const editSong = createAsyncThunk(
+  'editSong/artist',
+  async (data: { data; submissionId }, thunkAPI) => {
+    console.log('-------hiii', data)
+    try {
+      const response = await ARTIST_API.editSong(data.submissionId, data.data)
 
       return response
     } catch (error) {
@@ -201,7 +215,7 @@ export const submitSongSlice = createSlice({
         albumArt: string
         name: string
         artistName: string | null
-        songDuration: string | null
+        songDuration: number | null
         uri: string
       }>
     ) {
@@ -357,4 +371,5 @@ export const {
   setCuratorRatingsFilter,
   setCuratorPriceFilter,
   resetSelectedCurators,
+  setOtherArtistsParticipated,
 } = submitSongSlice.actions

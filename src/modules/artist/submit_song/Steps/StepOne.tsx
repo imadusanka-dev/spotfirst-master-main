@@ -37,9 +37,6 @@ import { SubmitWithLink } from './SubmitWithLink'
 import toast from 'react-hot-toast'
 
 const StepOne: FC = () => {
-  const [waveSurfer, setWaveSurfer] = useState<WaveSurfer | null>(null)
-  const [url, setUrl] = useState('')
-
   const {
     audio,
     activeTab,
@@ -52,7 +49,11 @@ const StepOne: FC = () => {
     releasedLabelName,
     releasedUnderLabelEnabled,
     tabs,
+    songInfo,
   } = useAppSelector((state) => state.submitSongSlice)
+
+  const [waveSurfer, setWaveSurfer] = useState<WaveSurfer | null>(null)
+  const [url, setUrl] = useState(songInfo.songUrl || '')
 
   const dispatch = useAppDispatch()
 
@@ -424,6 +425,7 @@ const StepOne: FC = () => {
                       onChange={(date) => {
                         dispatch(setReleasedDate(date))
                       }}
+                      value={releasedDate}
                     />
                   </div>
                 )}

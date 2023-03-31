@@ -60,11 +60,11 @@ const plusButtonVariants: Variants = {
 const whenToShareValues = [
   {
     label: 'Right Now',
-    value: dayjs(),
+    value: 'right_now',
   },
   {
     label: 'Custom',
-    value: null,
+    value: 'custom',
   },
 ]
 
@@ -77,6 +77,7 @@ export const ApproveRejectSubmission: FC<ApproveRejectSubmissionProps> = ({
   const [whereToShare, setWhereToShare] = useState([])
   const profile = useAppSelector((state) => state.authReducer.me)
   const [whenToShare, setWhenToShare] = useState(whenToShareValues[0])
+  const [shareDate, setShareDate] = useState(null)
   const [selectedPlaylist, setSelectedPlaylist] =
     useState<SelectedPlaylist | null>(null)
   const [feedback, setFeedback] = useState<string | null>(null)
@@ -112,11 +113,14 @@ export const ApproveRejectSubmission: FC<ApproveRejectSubmissionProps> = ({
       setLoading(true)
 
       //add track to spotify playlist
-      await addTrackToSpotifyPlaylist()
+      //await addTrackToSpotifyPlaylist()
 
       const response = await LABEL_API.approveSubmission({
         submissionId: submission._id,
-        date: whenToShare.value.toISOString(),
+        date:
+          whenToShare.value === whenToShareValues[0].value
+            ? dayjs().toISOString()
+            : shareDate.toISOString(),
         when: whenToShare.label,
         // where: whereToShare,
       })
@@ -344,20 +348,17 @@ export const ApproveRejectSubmission: FC<ApproveRejectSubmissionProps> = ({
                   />
                 </div>
 
-                {whenToShare.value ? (
+                {whenToShare.value === whenToShareValues[0].value ? (
                   <div className="text-sm text-slate-500">
                     Share date will be:{' '}
-                    {whenToShare.value.format('MMM DD, YYYY - hh:mm A')}
+                    {dayjs().format('MMM DD, YYYY - hh:mm A')}
                   </div>
                 ) : (
                   <div>
                     <CustomDatePicker
                       showTimeSelect
                       onChange={function (date: Date): void {
-                        setWhenToShare({
-                          label: 'Custom',
-                          value: dayjs(date),
-                        })
+                        setShareDate(dayjs(date))
                       }}
                     />
                   </div>
@@ -425,8 +426,10 @@ export const ApproveRejectSubmission: FC<ApproveRejectSubmissionProps> = ({
                     secondaryColor={'transparent'}
                     color="#fff"
                   />
+                ) : whenToShare.value === whenToShareValues[0].value ? (
+                  'Mark as shared'
                 ) : (
-                  'Mark as Approved'
+                  'Mark as approved'
                 )}
               </button>
             </div>

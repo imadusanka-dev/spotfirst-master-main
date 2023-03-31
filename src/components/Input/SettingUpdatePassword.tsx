@@ -106,7 +106,14 @@ const SettingUpdatePassword: FC = () => {
             </form>
           ) : (
             <>
-              <span className="flex-grow">*********</span>
+              <span className="flex-grow">
+                <input
+                  type="password"
+                  className="bg-transparent"
+                  value={'*****************'}
+                  disabled
+                />
+              </span>
               <span className="flex-shrink-0 ml-4">
                 <button
                   onClick={() => {

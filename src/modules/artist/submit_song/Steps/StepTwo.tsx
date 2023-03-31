@@ -260,7 +260,7 @@ const StepTwo: FC = () => {
                 }))}
                 onChange={(value) => {
                   const _moods = value.map((item) => item['value'])
-                  // dispatch(setSongInfo({ field: 'genres', value: _genres }))
+                  dispatch(setSongInfo({ field: 'moods', value: _moods }))
                 }}
                 options={moods_values}
               />

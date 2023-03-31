@@ -39,8 +39,14 @@ export const SubmitWithLink: FC<Props> = (props: Props) => {
 
   const hiddenInput = useRef<HTMLInputElement>()
 
-  const { useLink, songInfo, albumArt, releasedUnderLabelEnabled } =
-    useAppSelector((state) => state.submitSongSlice)
+  const {
+    useLink,
+    songInfo,
+    albumArt,
+    releasedUnderLabelEnabled,
+    releasedLabelName,
+    releasedDate,
+  } = useAppSelector((state) => state.submitSongSlice)
 
   const error = useAppSelector((state) =>
     state.submitSongSlice.errors?.find((item) => item.field === 'submit-link')
@@ -95,9 +101,9 @@ export const SubmitWithLink: FC<Props> = (props: Props) => {
 
   useEffect(() => {
     // set to FALSE when switch between tabs
-    dispatch(setReleasedTrackEnabled(false))
-    dispatch(setReleasedUnderLabelEnabled(false))
-    dispatch(setAlbumArt(null))
+    // dispatch(setReleasedTrackEnabled(false))
+    // dispatch(setReleasedUnderLabelEnabled(false))
+    // dispatch(setAlbumArt(null))
 
     return () => {
       // set to FALSE when switch between tabs
@@ -210,6 +216,7 @@ export const SubmitWithLink: FC<Props> = (props: Props) => {
         {releasedTrackEnabled && (
           <div className="my-3">
             <CustomDatePicker
+              value={releasedDate}
               showTimeSelect={false}
               onChange={(date) => {
                 dispatch(setReleasedDate(date))
@@ -246,6 +253,7 @@ export const SubmitWithLink: FC<Props> = (props: Props) => {
         {releasedUnderLabelEnabled && (
           <div className="mt-3">
             <Input
+              defaultValue={releasedLabelName}
               onChange={(event) => {
                 const labelName = event.target.value
                 dispatch(setReleasedLabel(labelName))

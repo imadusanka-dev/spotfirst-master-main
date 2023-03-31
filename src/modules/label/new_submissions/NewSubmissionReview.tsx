@@ -10,15 +10,19 @@ import { Dialog, Transition } from '@headlessui/react'
 import { FC, Fragment, useState, useEffect } from 'react'
 import { AlertCircle } from 'react-feather'
 import { Helmet } from 'react-helmet'
-import { Submission } from 'core/types'
+import { Curator, Submission } from 'core/types'
 import { ApproveRejectSubmission } from './ApproveRejectSubmission'
 import { NewSubmissionSongInfo } from './NewSubmissionSongInfo'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { ARTIST_API } from 'data'
 import { getSocialMediaUrl } from '../../../../utils/helpers'
 
+interface ISubmission {
+  curatorId: Curator
+  submissionId: Submission
+}
 interface NewSubmissionReviewPopupProps {
-  submission: Submission
+  submission: ISubmission
 }
 
 export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
@@ -29,10 +33,14 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
   const [previousSubmissions, setPreviousSubmissions] = useState([])
 
   useEffect(() => {
-    ARTIST_API.previousSubmissionsByArtistId(1, 4, submission.userId._id)
+    ARTIST_API.previousSubmissionsByArtistId(
+      1,
+      4,
+      submission.submissionId?.userId
+    )
       .then((response) => setPreviousSubmissions(response.payload))
       .catch((error) => console.log(error))
-  }, [submission.userId._id])
+  }, [submission.submissionId?.userId])
 
   function closeModal() {
     setIsOpen(false)
@@ -178,7 +186,7 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                                         {item.trackTitle}
                                       </div>
                                       <span className="text-xs text-primary-blue capitalize">
-                                        {item.status.toLowerCase()}
+                                        {item.status?.toLowerCase()}
                                       </span>
                                     </div>
                                   </div>
@@ -202,16 +210,16 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                       <div className="flex flex-col p-5 m-5 space-y-4 bg-white border divide-y rounded-lg">
                         <div className="flex justify-between">
                           <NewSubmissionSongInfo
-                            artist={submission.artistName}
-                            songName={submission.trackTitle}
-                            genres={submission.genres}
-                            songType={submission.songType}
-                            imageUrl={submission.imageUrl}
-                            songUrl={submission.songUrl}
-                            preview={submission.songPreview}
-                            releasedDate={submission.releasedDate}
-                            label={submission.label}
-                            uri={submission.url}
+                            artist={submission.submissionId?.artistName}
+                            songName={submission.submissionId?.trackTitle}
+                            genres={submission.submissionId?.genres}
+                            songType={submission.submissionId?.songType}
+                            imageUrl={submission.submissionId?.imageUrl}
+                            songUrl={submission.submissionId?.songUrl}
+                            preview={submission.submissionId?.songPreview}
+                            releasedDate={submission.submissionId?.releasedDate}
+                            label={submission.submissionId?.label}
+                            uri={submission.submissionId?.url}
                           />
                           <div>
                             <button>
@@ -224,11 +232,11 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                             Message
                           </span>
                           <blockquote className="text-slate-600 italic">
-                            {submission.message}
+                            {submission.submissionId?.message}
                           </blockquote>
                         </div>
                         <ApproveRejectSubmission
-                          submission={submission}
+                          submission={submission?.submissionId}
                           setAction={setAction}
                           action={action}
                         />
