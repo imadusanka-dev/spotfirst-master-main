@@ -17,12 +17,8 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { ARTIST_API } from 'data'
 import { getSocialMediaUrl } from '../../../../utils/helpers'
 
-interface ISubmission {
-  curatorId: Curator
-  submissionId: Submission
-}
 interface NewSubmissionReviewPopupProps {
-  submission: ISubmission
+  submission: Submission
 }
 
 export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
@@ -33,14 +29,10 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
   const [previousSubmissions, setPreviousSubmissions] = useState([])
 
   useEffect(() => {
-    ARTIST_API.previousSubmissionsByArtistId(
-      1,
-      4,
-      submission.submissionId?.userId
-    )
+    ARTIST_API.previousSubmissionsByArtistId(1, 4, submission.userId)
       .then((response) => setPreviousSubmissions(response.payload))
       .catch((error) => console.log(error))
-  }, [submission.submissionId?.userId])
+  }, [submission.userId])
 
   function closeModal() {
     setIsOpen(false)
@@ -125,13 +117,13 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                     <div className="flex flex-col max-h-[83vh] overflow-y-scroll scrollbar-hide w-3/12 py-10 border-r">
                       <div className="flex flex-col items-center px-8 py-5 ">
                         <Image
-                          src={submission.userId?.profilePicture}
+                          src={submission.users?.profilePicture}
                           width={160}
                           height={160}
                           className="w-40 min-w-[160px] relative h-40 rounded-full bg-primary-blue"
                         />
                         <h4 className="pt-4 text-lg font-medium">
-                          {submission.userId?.name}
+                          {submission.users?.name}
                         </h4>
 
                         {/* ------ social icons ----- */}
@@ -140,7 +132,7 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                         {/* -------- artist bio secion --------- */}
                         <div className="py-4">
                           <p className="text-sm text-center text-gray-500">
-                            {submission.userId?.description}
+                            {submission.users?.description}
                           </p>
                         </div>
 
@@ -210,16 +202,16 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                       <div className="flex flex-col p-5 m-5 space-y-4 bg-white border divide-y rounded-lg">
                         <div className="flex justify-between">
                           <NewSubmissionSongInfo
-                            artist={submission.submissionId?.artistName}
-                            songName={submission.submissionId?.trackTitle}
-                            genres={submission.submissionId?.genres}
-                            songType={submission.submissionId?.songType}
-                            imageUrl={submission.submissionId?.imageUrl}
-                            songUrl={submission.submissionId?.songUrl}
-                            preview={submission.submissionId?.songPreview}
-                            releasedDate={submission.submissionId?.releasedDate}
-                            label={submission.submissionId?.label}
-                            uri={submission.submissionId?.url}
+                            artist={submission.artistName}
+                            songName={submission.trackTitle}
+                            genres={submission.genres}
+                            songType={submission.songType}
+                            imageUrl={submission.imageUrl}
+                            songUrl={submission.songUrl}
+                            preview={submission.songPreview}
+                            releasedDate={submission.releasedDate}
+                            label={submission.label}
+                            uri={submission.url}
                           />
                           <div>
                             <button>
@@ -232,11 +224,11 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                             Message
                           </span>
                           <blockquote className="text-slate-600 italic">
-                            {submission.submissionId?.message}
+                            {submission.message}
                           </blockquote>
                         </div>
                         <ApproveRejectSubmission
-                          submission={submission?.submissionId}
+                          submission={submission}
                           setAction={setAction}
                           action={action}
                         />

@@ -21,4 +21,6 @@ export default {
     api.put('/profile/updatePassword', {
       password: password,
     }),
+  getTokenCount: () =>
+    api.get<BaseResponse>('/users/my/tokens').then((res) => res.data),
 }

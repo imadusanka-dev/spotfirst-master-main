@@ -37,10 +37,14 @@ export interface Submission {
   releasedDate: string | null
   url: string | null
   totalSubmission: number
+  users: any
+  id: string
 }
 
 export interface Curator {
   _id: string
+
+  id: string
   curatorName: string
   rating: number
   price: number

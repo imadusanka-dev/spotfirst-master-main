@@ -88,7 +88,7 @@ export const NewSubmissions: FC = () => {
                     >
                       <div className="relative">
                         <Image
-                          src={'/images/no-items.png'}
+                          src="/images/no-items.png"
                           layout="fixed"
                           alt="No Items"
                           quality={100}

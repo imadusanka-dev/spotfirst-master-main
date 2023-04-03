@@ -75,6 +75,22 @@ export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   }
 })
 
+export const getTokens = createAsyncThunk(
+  'user/tokens',
+  async (_, thunkAPI) => {
+    try {
+      const response = await AUTH_API.getTokenCount()
+
+      if (response.success) {
+        return response.payload
+      }
+    } catch (error) {
+      const err: AxiosError<BaseResponse> = error
+      return thunkAPI.rejectWithValue({ error: err.response.data.message })
+    }
+  }
+)
+
 export interface AuthSliceState {
   accessToken: string
   loading: AuthStates
@@ -91,7 +107,7 @@ export interface AuthSliceState {
     genres?: string[]
   }
   roles: ROLE[]
-
+  tokens: any
   error?: SerializedError
 }
 
@@ -101,6 +117,7 @@ const internalInitialState = {
   me: null,
   roles: [],
   error: null,
+  tokens: null,
 } as AuthSliceState
 
 export const authSlice = createSlice({
@@ -139,6 +156,13 @@ export const authSlice = createSlice({
 
     builder.addCase(fetchUser.rejected, (state) => {
       state.loading = AuthStates.SUCCESS
+    })
+
+    builder.addCase(getTokens.fulfilled, (state, action) => {
+      state.tokens = action.payload
+    })
+    builder.addCase(getTokens.rejected, (state, action) => {
+      state.error = action.payload['error']
     })
   },
 })

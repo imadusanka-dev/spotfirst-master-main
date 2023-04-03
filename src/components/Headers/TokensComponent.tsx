@@ -1,14 +1,22 @@
 import { IoWalletOutline } from 'react-icons/io5'
 import { Popover, Transition } from '@headlessui/react'
-import { FC, Fragment } from 'react'
+import { FC, Fragment, useEffect } from 'react'
+import { useAppDispatch } from '../../core/hooks/useRedux'
 import classNames from 'classnames'
+import { getTokens } from '../../redux/slices/auth'
 
 interface Props {
   dropdown: boolean
-  me?: any
+  tokens: any
 }
 
-const TokensDropdown: FC<Props> = ({ dropdown, me }) => {
+const TokensDropdown: FC<Props> = ({ dropdown, tokens }) => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(getTokens())
+  }, [])
+
   return (
     <>
       {dropdown ? (
@@ -27,7 +35,7 @@ const TokensDropdown: FC<Props> = ({ dropdown, me }) => {
                 <div>
                   <IoWalletOutline size={18} />
                 </div>
-                <div>Tokens : 100</div>
+                <div>Tokens : {tokens?.total}</div>
               </Popover.Button>
 
               <Transition
@@ -43,9 +51,9 @@ const TokensDropdown: FC<Props> = ({ dropdown, me }) => {
                   <div className="px-4 py-2 mt-2 overflow-hidden bg-white rounded-md shadow-normal">
                     <span className="text-xs text-gray-400">Token Balance</span>
                     <p className="text-2xl font-medium text-primary-green">
-                      100
+                      {tokens?.total}
                       <span className="ml-1 text-sm text-gray-500">
-                        ($5.99)
+                        ($ {tokens?.payout})
                       </span>
                     </p>
                   </div>
@@ -63,7 +71,7 @@ const TokensDropdown: FC<Props> = ({ dropdown, me }) => {
           <div>
             <IoWalletOutline size={18} />
           </div>
-          <div>Tokens : {me?.tokens}</div>
+          <div>Tokens : {tokens?.total}</div>
         </div>
       )}
     </>

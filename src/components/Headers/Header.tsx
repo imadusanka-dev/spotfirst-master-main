@@ -31,7 +31,7 @@ const Header: FC<HeaderProps> = ({
   const router = useRouter()
   const dispatch = useAppDispatch()
 
-  const me = useAppSelector((state) => state.authReducer.me)
+  const { me, tokens } = useAppSelector((state) => state.authReducer)
 
   useEffect(() => {
     if (storedValue === true && systemTheme) {
@@ -68,7 +68,7 @@ const Header: FC<HeaderProps> = ({
 
         <div className="flex items-center">
           <div className="mr-10">
-            <TokensDropdown dropdown={role === 'ROLE_LABEL'} me={me} />
+            <TokensDropdown dropdown={role === 'ROLE_LABEL'} tokens={tokens} />
           </div>
           <div className="mr-1">
             <button className="p-2 transition-all duration-100 ease-in-out rounded-lg text-slate-500 dark:hover:text-slate-300 hover:text-slate-700 dark:text-slate-300 hover:bg-slate-200 hover:bg-opacity-50">

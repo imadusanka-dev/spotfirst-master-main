@@ -114,7 +114,7 @@ export const PreviousSubmissionItem: FC<PreviousSubmissionItemProps> = ({
                   <div className="flex items-center space-x-1">
                     <FileText className="text-slate-500" size={14} />
                     <p className="text-xs text-slate-500">
-                      Total Submissions: 5
+                      Total Submissions: {submission.totalSubmission}
                     </p>
                   </div>
                   <div className="flex items-center space-x-1">

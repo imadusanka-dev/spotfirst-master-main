@@ -5,12 +5,8 @@ import { NewSubmissionReview } from './NewSubmissionReview'
 import dayjs from 'dayjs'
 import { millisToMinutesAndSeconds } from '../../../../utils/helpers'
 
-interface ISubmission {
-  curatorId: Curator
-  submissionId: Submission
-}
 interface NewSubmissionItemProps {
-  submission: ISubmission
+  submission: Submission
 }
 
 export const NewSubmissionItem: FC<NewSubmissionItemProps> = ({
@@ -22,12 +18,12 @@ export const NewSubmissionItem: FC<NewSubmissionItemProps> = ({
         <div className="relative w-[60px] h-[60px] rounded-lg overflow-hidden min-w-[60px]">
           <Image
             layout="fixed"
-            src={submission.submissionId?.imageUrl}
+            src={submission.imageUrl}
             width={60}
             height={60}
             placeholder="blur"
-            blurDataURL={submission.submissionId?.imageUrl}
-            alt={submission.submissionId?.trackTitle}
+            blurDataURL={submission.imageUrl}
+            alt={submission.trackTitle}
           />
         </div>
       </td>
@@ -35,7 +31,7 @@ export const NewSubmissionItem: FC<NewSubmissionItemProps> = ({
         <div className="flex">
           <a className="inline-flex space-x-2 text-sm  group">
             <p className="text-slate-500 group-hover:text-slate-900">
-              {submission.submissionId?.trackTitle}
+              {submission.trackTitle}
             </p>
           </a>
         </div>
@@ -44,28 +40,25 @@ export const NewSubmissionItem: FC<NewSubmissionItemProps> = ({
         <div className="flex">
           <a className="inline-flex space-x-2 text-sm truncate group">
             <p className="text-slate-500 truncate group-hover:text-slate-900">
-              {submission.submissionId?.duration
-                ? millisToMinutesAndSeconds(submission.submissionId?.duration)
+              {submission.duration
+                ? millisToMinutesAndSeconds(submission.duration)
                 : 'N/A'}
             </p>
           </a>
         </div>
       </td>
       <td className="px-6 py-4 text-sm text-slate-500 whitespace-nowrap">
-        {submission.submissionId?.artistName}
+        {submission.artistName}
       </td>
       <td className="px-6 py-4 text-sm text-slate-500 whitespace-nowrap">
         <span className="px-4 text- py-1 rounded-full bg-primary-blue bg-opacity-5 text-primary-blue">
-          {submission.submissionId?.remainingTime
-            ? `${dayjs(new Date()).diff(
-                submission.submissionId?.remainingTime,
-                'hour'
-              )}h`
+          {submission.remainingTime
+            ? `${dayjs(new Date()).diff(submission.remainingTime, 'hour')}h`
             : 'N/A'}
         </span>
       </td>
       <td className=" px-6 py-4 text-sm text-slate-500 whitespace-nowrap ">
-        {submission.submissionId?.genres.map((genre, index) => (
+        {submission?.genres.map((genre, index) => (
           <span
             key={index}
             className="inline-flex rounded-full uppercase font-medium bg-primary-magenta bg-opacity-10 px-2 text-xs  leading-5 text-primary-magenta"
@@ -77,7 +70,7 @@ export const NewSubmissionItem: FC<NewSubmissionItemProps> = ({
 
       <td className="px-6 py-4 text-sm  text-slate-500 whitespace-nowrap">
         <span className=" uppercase font-medium  text-xs ">
-          {submission.submissionId?.songType}
+          {submission.songType}
         </span>
       </td>
       <td className="px-6 py-4 text-sm  text-slate-500 whitespace-nowrap">

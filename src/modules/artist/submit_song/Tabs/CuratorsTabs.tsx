@@ -257,10 +257,10 @@ const CuratorsTab = ({
         {!curators.isFetching &&
           curators.data.map((curator) => {
             const _selected = selectedCurators.some(
-              (item) => item === curator._id
+              (item) => item === curator.id
             )
             return (
-              <li key={curator._id}>
+              <li key={curator.id}>
                 <a className="block  hover:bg-gray-50">
                   <div className="flex items-center px-4 py-4 sm:px-6">
                     <div className="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
@@ -274,7 +274,7 @@ const CuratorsTab = ({
                                 type="checkbox"
                                 checked={_selected}
                                 onChange={(event) =>
-                                  onChange(event.target.checked, curator._id)
+                                  onChange(event.target.checked, curator.id)
                                 }
                                 className="w-5 h-5 ml-4 rounded-md border-gray-50 focus:ring-primary-blue text-primary-blue"
                               />

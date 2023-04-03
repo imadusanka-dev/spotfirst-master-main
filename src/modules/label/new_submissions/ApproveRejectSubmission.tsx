@@ -116,7 +116,7 @@ export const ApproveRejectSubmission: FC<ApproveRejectSubmissionProps> = ({
       //await addTrackToSpotifyPlaylist()
 
       const response = await LABEL_API.approveSubmission({
-        submissionId: submission._id,
+        submissionId: submission.id,
         date:
           whenToShare.value === whenToShareValues[0].value
             ? dayjs().toISOString()
@@ -146,10 +146,7 @@ export const ApproveRejectSubmission: FC<ApproveRejectSubmissionProps> = ({
 
     try {
       setLoading(true)
-      const response = await LABEL_API.rejectSubmission(
-        submission._id,
-        feedback
-      )
+      const response = await LABEL_API.rejectSubmission(submission.id, feedback)
       setLoading(false)
       if (response.success) {
         router.push(`/label/rejected`)

@@ -227,7 +227,9 @@ const ResponseItem: FC<ResponseItemProps> = ({ response }) => {
           </div>
         </td>
         <td className="px-6 py-4 text-sm text-right text-gray-500 whitespace-nowrap">
-          {dayjs(response.createdAt).format('MMM DD, YYYY - hh:mm A')}
+          {dayjs(response?.approvalStatus[0]?.createdAt).format(
+            'MMM DD, YYYY - hh:mm A'
+          )}
         </td>
         <td className="hidden px-6 py-4 text-sm text-gray-500 whitespace-nowrap md:block">
           N/A
@@ -242,7 +244,7 @@ const ResponseItem: FC<ResponseItemProps> = ({ response }) => {
               'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium capitalize'
             )}
           >
-            {response.songApproveStatuses}
+            {response?.approvalStatus[0]?.status}
           </Button>
         </td>
       </tr>
