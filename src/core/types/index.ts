@@ -35,7 +35,7 @@ export interface Submission {
   label: string | null
   new: boolean
   releasedDate: string | null
-  url: string | null
+  uri: string | null
   totalSubmission: number
   users: any
   id: string

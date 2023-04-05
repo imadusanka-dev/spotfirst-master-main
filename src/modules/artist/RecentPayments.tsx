@@ -4,25 +4,40 @@ import classNames from 'classnames'
 const transactions = [
   {
     id: 1,
-    name: '100 Tokens',
+    name: '1 Token',
     href: '#',
-    amount: '$20.00',
+    amount: '$1.00',
     currency: 'USD',
     status: 'success',
-    date: 'July 11, 2020',
-    datetime: '2020-07-11',
+    date: 'April 06, 2023',
   },
   {
-    id: 1,
-    name: '50 Tokens',
+    id: 2,
+    name: '10 Tokens',
     href: '#',
     amount: '$10.00',
     currency: 'USD',
     status: 'success',
-    date: 'July 11, 2020',
-    datetime: '2020-07-11',
+    date: 'April 05, 2023',
   },
-  // More transactions...
+  {
+    id: 3,
+    name: '5 Tokens',
+    href: '#',
+    amount: '$5.00',
+    currency: 'USD',
+    status: 'success',
+    date: 'Feb 11, 2023',
+  },
+  {
+    id: 4,
+    name: '2 Tokens',
+    href: '#',
+    amount: '$2.00',
+    currency: 'USD',
+    status: 'success',
+    date: 'March 21, 2023',
+  },
 ]
 
 const statusStyles = {
@@ -92,9 +107,7 @@ const RecentPayments = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 text-sm text-right text-gray-500 whitespace-nowrap">
-                          <time dateTime={transaction.datetime}>
-                            {transaction.date}
-                          </time>
+                          <time>{transaction.date}</time>
                         </td>
                       </tr>
                     ))}

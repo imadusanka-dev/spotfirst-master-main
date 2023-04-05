@@ -211,7 +211,7 @@ export const NewSubmissionReview: FC<NewSubmissionReviewPopupProps> = ({
                             preview={submission.songPreview}
                             releasedDate={submission.releasedDate}
                             label={submission.label}
-                            uri={submission.url}
+                            uri={submission.uri}
                           />
                           <div>
                             <button>
