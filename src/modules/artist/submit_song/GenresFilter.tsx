@@ -22,7 +22,7 @@ const GenresFilter = () => {
 
   return (
     <form>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap max-h-96 overflow-auto">
         {genres_values[0].options.map((genre) => (
           <>
             <div className="flex items-center mb-4 mr-4" key={genre.value}>
