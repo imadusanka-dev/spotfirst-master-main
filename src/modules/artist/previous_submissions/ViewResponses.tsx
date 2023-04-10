@@ -6,10 +6,11 @@ import { CheckSquare, Disc, FileText, User } from 'react-feather'
 import { MdClose, MdStar, MdStarBorder } from 'react-icons/md'
 import Rating from 'react-rating'
 import { motion } from 'framer-motion'
-import { ARTIST_API } from 'data'
+import { ARTIST_API, CURATOR_API } from 'data'
 import { Submission } from 'core/types'
 import dayjs from 'dayjs'
 import Image from 'next/legacy/image'
+import toast from 'react-hot-toast'
 
 interface ViewResponsesProps {
   submission: Submission
@@ -211,6 +212,26 @@ interface ResponseItemProps {
 
 const ResponseItem: FC<ResponseItemProps> = ({ response }) => {
   const [view, setView] = useState(false)
+  const [rating, setRating] = useState(0)
+
+  const handleRate = async () => {
+    try {
+      const payload = {
+        curatorId: response.id,
+        ratings: {
+          [rating]: 1,
+        },
+      }
+
+      const res = await CURATOR_API.rateCurator(payload)
+      if (res.status) {
+        setView(false)
+      }
+    } catch (error) {
+      toast.error('Something went wrong')
+    }
+  }
+
   return (
     <>
       <tr className="bg-white">
@@ -248,7 +269,7 @@ const ResponseItem: FC<ResponseItemProps> = ({ response }) => {
           </Button>
         </td>
       </tr>
-      {view && response.status === 'REJECTED' && (
+      {view && response?.approvalStatus[0]?.status === 'REJECTED' && (
         <motion.tr
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: '100%', opacity: 1 }}
@@ -263,7 +284,8 @@ const ResponseItem: FC<ResponseItemProps> = ({ response }) => {
                 rows={2}
                 placeholder="Feedback"
                 className="w-full px-3 py-2 rounded-lg outline-none resize-none bg-gray-50"
-              ></textarea>
+                defaultValue={response?.approvalStatus[0]?.declinedFeedback}
+              />
 
               <div className="flex items-center mt-3 ml-auto space-x-2">
                 <div>
@@ -272,9 +294,13 @@ const ResponseItem: FC<ResponseItemProps> = ({ response }) => {
                       <MdStarBorder className="w-6 h-6 text-yellow-500" />
                     }
                     fullSymbol={<MdStar className="w-6 h-6 text-yellow-500" />}
+                    onChange={setRating}
+                    initialRating={0}
                   />
                 </div>
-                <Button size="sm">Rate</Button>
+                <Button size="sm" onClick={handleRate}>
+                  Rate
+                </Button>
               </div>
             </div>
           </td>

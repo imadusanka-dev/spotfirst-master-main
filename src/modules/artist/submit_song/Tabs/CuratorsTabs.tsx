@@ -316,16 +316,10 @@ const CuratorsTab = ({
                                 />
                               </div>
                               <p className="text-xs text-gray-500">
-                                {/*Approved Rate : Premium{' '}*/}
-                                {/*{curator.premiumApprovedRate * 100}% | Free{' '}*/}
-                                {/*{curator.freeApprovedRate * 100}%{' '}*/}
-                                Approved Rate :{curator.premiumApprovedRate}%
+                                Approved Rate :{curator.approveRate}%
                               </p>
                               <p className="text-xs text-gray-500">
-                                {/*Response Rate : Premium{' '}*/}
-                                {/*{curator.premiumResponseRate * 100}% | Free{' '}*/}
-                                {/*{curator.freeResponseRate * 100}%{' '}*/}
-                                Response Rate :{curator.premiumResponseRate}%
+                                Response Rate :{curator.responseRatio}%
                               </p>
                             </div>
                           </div>

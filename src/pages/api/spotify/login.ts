@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // your application requests authorization
       const scope =
-        'playlist-modify-public playlist-modify-public streaming user-read-email user-read-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state'
+        'playlist-modify-public playlist-modify-publ ic streaming user-read-email user-read-private user-library-read user-library-modify user-read-playback-state user-modify-playback-state'
 
       const params = new URLSearchParams({
         response_type: 'code',

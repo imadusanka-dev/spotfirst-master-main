@@ -96,25 +96,33 @@ const StepThree = ({ isEdit, submissionId }) => {
     }
 
     if (isEdit) {
-      dispatch(editSong({ data, submissionId })).then(() => {
-        dispatch(reset())
-        if (authState.me.primaryRole === 'ROLE_ARTIST') {
-          router.push('/artist/previous-submissions')
-        }
-        if (authState.me.primaryRole === 'ROLE_LABEL') {
-          router.push('/label/previous-submissions')
-        }
-      })
+      dispatch(editSong({ data, submissionId }))
+        .then(() => {
+          dispatch(reset())
+          if (authState.me.primaryRole === 'ROLE_ARTIST') {
+            router.push('/artist/previous-submissions')
+          }
+          if (authState.me.primaryRole === 'ROLE_LABEL') {
+            router.push('/label/previous-submissions')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     } else {
-      dispatch(submitSong({ data })).then(() => {
-        dispatch(reset())
-        if (authState.me.primaryRole === 'ROLE_ARTIST') {
-          router.push('/artist/previous-submissions')
-        }
-        if (authState.me.primaryRole === 'ROLE_LABEL') {
-          router.push('/label/previous-submissions')
-        }
-      })
+      dispatch(submitSong({ data }))
+        .then(() => {
+          dispatch(reset())
+          if (authState.me.primaryRole === 'ROLE_ARTIST') {
+            router.push('/artist/previous-submissions')
+          }
+          if (authState.me.primaryRole === 'ROLE_LABEL') {
+            router.push('/label/previous-submissions')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     }
   }
 

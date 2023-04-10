@@ -8,7 +8,6 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Socket } from 'socket.io'
 import { useAppSelector } from 'core/hooks/useRedux'
 import Image from 'next/legacy/image'
 import { checkUserRole } from '../../utils/helpers'
@@ -33,7 +32,11 @@ interface IUser {
   profilePicture: string
 }
 
-const MessagesInbox = () => {
+const MessagesInbox = ({ router: { query = {} } = {} }: any) => {
+  const selectedArtist = query?.object
+    ? JSON.parse(JSON.parse(query.object))
+    : null
+
   const inputRef = useRef(null)
 
   // connected flag
@@ -48,17 +51,7 @@ const MessagesInbox = () => {
   const authState = useAppSelector((state) => state.authReducer)
 
   useEffect(() => {
-    const fetchChatHistory = async () => {
-      try {
-        const res = await COMMON_API.getChatHistory(selectedUser?.id)
-        setChat((prevChat) => [...prevChat, ...res.payload])
-      } catch (error) {
-        toast.error('chat history error')
-      }
-    }
-
     if (selectedUser?.id && authState?.me?.id) {
-      setChat([])
       fetchChatHistory()
     }
   }, [selectedUser?.id, authState?.me?.id])
@@ -68,8 +61,12 @@ const MessagesInbox = () => {
   }, [])
 
   useEffect(() => {
-    setChat([])
-  }, [selectedUser, selectedUser?.id, authState?.me?.id])
+    if (selectedArtist) {
+      setSelectedUser(selectedArtist)
+    }
+  }, [setSelectedUser])
+
+  useEffect(() => {}, [selectedUser, selectedUser?.id, authState?.me?.id])
 
   useEffect(() => {
     if (chatSocketConnection) {
@@ -84,13 +81,12 @@ const MessagesInbox = () => {
 
       chatSocketConnection.on('receiveChat', (message) => {
         chat.push(message)
-        setChat([...chat])
+        fetchChatHistory()
       })
     }
 
     return () => {
       chatSocketConnection.off('receiveChat')
-      setChat([])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUser?.id, authState?.me?.id])
@@ -98,7 +94,7 @@ const MessagesInbox = () => {
   const fetchChatHistory = async () => {
     try {
       const res = await COMMON_API.getChatHistory(selectedUser?.id)
-      setChat([...chat, ...res.payload])
+      setChat((prevChat) => [...prevChat, ...res.payload])
     } catch (error) {
       toast.error('chat history error')
     }
@@ -123,6 +119,8 @@ const MessagesInbox = () => {
         senderId: authState?.me?.id,
         receiverId: selectedUser?.id,
       })
+      // update chat state with the new message
+      fetchChatHistory()
     }
     // focus after click
     inputRef.current.focus()
@@ -154,6 +152,7 @@ const MessagesInbox = () => {
                     email={user.email}
                     profile={user.profilePicture}
                     setSelectedUser={setSelectedUser}
+                    selectedUser={selectedUser}
                     setChat={setChat}
                   />
                 )
@@ -208,7 +207,6 @@ const MessagesInbox = () => {
                 </div>
               )}
             </div>
-
             {/* End Chat view */}
 
             {/* Chat input */}

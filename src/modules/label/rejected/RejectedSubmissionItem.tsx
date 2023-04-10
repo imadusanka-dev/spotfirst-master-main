@@ -51,19 +51,24 @@ export const RejectedSubmissionItem: FC<RejectedSubmissionItemProps> = ({
                   <div className="flex items-center space-x-1">
                     <Calendar className="text-gray-500" size={14} />
                     <p className="text-xs text-gray-500">
-                      {getFormattedDateString(submission.declinedDate)}
+                      {getFormattedDateString(
+                        submission?.curators[0]?.approvalStatus[0]?.updatedAt
+                      )}
                     </p>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Star className="text-gray-500" size={14} />
                     <p className="text-xs text-gray-500">3/5</p>
                   </div>
-                  <div className="w-[300px]">
+                  <div className="w-[500px]">
                     <textarea
                       className="w-full p-2 text-xs rounded-md outline-none resize-none bg-gray-50"
                       placeholder="Feedback"
                       rows={2}
-                      value={submission.declinedFeedback}
+                      value={
+                        submission?.curators[0]?.approvalStatus[0]
+                          ?.declinedFeedback
+                      }
                       disabled
                     ></textarea>
                   </div>

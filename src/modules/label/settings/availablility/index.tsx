@@ -40,7 +40,7 @@ const days = [
 const AvailabilityTab = () => {
   const { register, handleSubmit } = useForm()
 
-  const [isActive, setActive] = useState(false)
+  const [isActive, setActive] = useState(true)
   const [unavailableFrom, setUnavailableFrom] = useState(null)
   const [unavailableTill, setUnavailableTill] = useState(null)
   const [unavailableDates, setUnavailableDates] = useState({

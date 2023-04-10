@@ -50,7 +50,7 @@ export const PreviousSubmissionItem: FC<PreviousSubmissionItemProps> = ({
         name: submission.trackTitle,
         artistName: submission.artistName,
         songDuration: submission.duration,
-        uri: submission.url,
+        uri: submission.uri,
       })
     )
     dispatch(setReleasedLabel(submission.label))
@@ -141,7 +141,9 @@ export const PreviousSubmissionItem: FC<PreviousSubmissionItemProps> = ({
                 Submit
               </button>
               <Link
-                href={`/artist/previous-submissions/edit/${submission._id}`}
+                href={`/${roleNameToPath(role)}/previous-submissions/edit/${
+                  submission._id
+                }`}
               >
                 <button
                   className="px-4 text-sm py-1 transition-all duration-200 bg-slate-100  rounded-full text-slate-600"

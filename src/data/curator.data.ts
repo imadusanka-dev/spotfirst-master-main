@@ -50,4 +50,5 @@ export default {
       .then((res) => res.data),
   updateCuratorAvailable: (data: ICuratorAvailabilityUpdate) =>
     api.put<BaseResponse>('/curator/availability', data),
+  rateCurator: (data) => api.post<BaseResponse>('/curator/rating', data),
 }

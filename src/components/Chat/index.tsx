@@ -1,5 +1,6 @@
 import { FC, memo } from 'react'
 import Image from 'next/legacy/image'
+import classNames from 'classnames'
 
 interface ChatItemProps {
   online?: boolean
@@ -7,6 +8,7 @@ interface ChatItemProps {
   name?: string
   email?: string
   profile?: string
+  selectedUser: any
   setSelectedUser?: (value) => void
   setChat?: (value) => void
 }
@@ -16,22 +18,23 @@ const ChatItem: FC<ChatItemProps> = ({
   name,
   email,
   profile,
+  selectedUser,
   setSelectedUser,
   setChat,
 }) => {
   const handleSingleChatUser = () => {
-    setChat([])
-    setSelectedUser({
-      id,
-      name,
-      email,
-      profile,
-    })
+    if (selectedUser.id !== id) {
+      setChat([])
+      setSelectedUser({ id, name, email, profile })
+    }
   }
   return (
     <div
-      className="flex rounded-lg transition-all px-2 cursor-pointer py-2 hover:bg-gray-50 space-x-2"
-      onClick={() => handleSingleChatUser()}
+      className={classNames(
+        'flex rounded-lg transition-all px-2 cursor-pointer py-2 hover:bg-blue-50 space-x-2',
+        { 'bg-blue-200': selectedUser.id === id }
+      )}
+      onClick={handleSingleChatUser}
     >
       <div className="min-w-[40px] relative w-[40px] h-[40px] rounded-full bg-primary-blue">
         {profile && (
@@ -44,9 +47,8 @@ const ChatItem: FC<ChatItemProps> = ({
           />
         )}
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col justify-center">
         <span className="text-sm">{name}</span>
-        <span className="text-[12px] text-gray-500">{email}</span>
       </div>
     </div>
   )

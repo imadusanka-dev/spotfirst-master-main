@@ -10,7 +10,16 @@ import StepTwo from './Steps/StepTwo'
 import StepThree from './Steps/StepThree'
 import { useAppSelector } from '../../../core/hooks/useRedux'
 
-const FormContainer = ({ title, isEdit, submissionId }) => {
+interface IFormContainerProps {
+  title: string
+  isEdit: boolean | null
+  submissionId?: string
+}
+const FormContainer = ({
+  title,
+  isEdit,
+  submissionId,
+}: IFormContainerProps) => {
   const step = useAppSelector((state) => state.submitSongSlice.step)
 
   return (

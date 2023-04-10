@@ -43,7 +43,6 @@ export interface Submission {
 
 export interface Curator {
   _id: string
-
   id: string
   curatorName: string
   rating: number
@@ -59,6 +58,8 @@ export interface Curator {
   curatorAvailability: null
   user: User
   userId: string
+  approveRate: number | null
+  responseRatio: number | null
 }
 
 export type User = {

@@ -1,6 +1,7 @@
 import { Submission } from 'core/types'
 import { getFormattedDateString } from 'core/utils'
 import Image from 'next/legacy/image'
+import Link from 'next/link'
 import { FC } from 'react'
 import { Calendar, Disc, FileText, Music, User } from 'react-feather'
 import { MarkAsSharedPopup } from './MarkAsSharedPopop'
@@ -84,9 +85,24 @@ export const ApprovedSubmissionItem: FC<ApprovedSubmssionItemProps> = ({
                   {/*${submission.credits?.toFixed(1)}*/}$ 0.8
                 </div>
               </div>
-              <button className="px-4 text-sm py-1 transition-all duration-200 bg-primary-blue  rounded-full text-white">
-                Contact Artist
-              </button>
+              <Link
+                href={{
+                  pathname: '/chat',
+                  query: {
+                    object: JSON.stringify({
+                      id: submission?.users?.id,
+                      name: submission?.users?.name,
+                      email: submission?.users?.email,
+                      profilePicture: submission?.users?.profilePicture,
+                    }),
+                  },
+                }}
+              >
+                <button className="px-4 text-sm py-1 transition-all duration-200 bg-primary-blue  rounded-full text-white">
+                  Contact Artist
+                </button>
+              </Link>
+
               <MarkAsSharedPopup />
 
               <button className="px-4 text-sm py-1 transition-all duration-200 bg-primary-magenta  rounded-full text-white">

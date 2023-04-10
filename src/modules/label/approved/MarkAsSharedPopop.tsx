@@ -8,9 +8,9 @@ export const MarkAsSharedPopup = () => {
       <Popover className={'relative w-full'}>
         {({ open }) => (
           <>
-            <Popover.Button>
+            {/* <Popover.Button>
               <Button size="sm">Mark as Shared</Button>
-            </Popover.Button>
+            </Popover.Button> */}
 
             <Transition
               as={Fragment}
