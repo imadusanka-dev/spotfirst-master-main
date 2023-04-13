@@ -7,6 +7,10 @@ import {
   faSpotify,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons'
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/router'
+import { AxiosError } from 'axios'
+import { SpinnerCircular } from 'spinners-react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon, PlusIcon } from '@heroicons/react/outline'
@@ -15,6 +19,8 @@ import { SocialLinkInput } from 'components/Input/SocialLinkInput'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
+import { AUTH_API } from 'data'
+import { BaseResponse } from 'core/types/responses'
 
 interface FieldValues {
   name: string
@@ -45,6 +51,58 @@ const CuratorRegisterForm = () => {
     },
   ]
   const [selectedPlatform, setSelectedPlatform] = useState(0)
+  const [loading, setLoading] = useState(false)
+
+  const router = useRouter()
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm<FieldValues>()
+
+  async function onSubmit(data: FieldValues) {
+    if (data.password !== data.cpassword) {
+      setError('cpassword', {
+        type: 'validate',
+        message: 'Passwords not matched!',
+      })
+      return
+    }
+
+    setLoading(true)
+
+    const registerData = {
+      email: data.email,
+      name: data.name,
+      password: data.password,
+      roles: ['ROLE_CURATOR'],
+      links: {
+        facebook: data['facebook'],
+        soundCloud: data['soundcloud'],
+        youtube: data['youtube'],
+        instagram: data['instagram'],
+      },
+    }
+
+    try {
+      const response = await AUTH_API.register(registerData)
+      if (response.success) {
+        toast.success(response['message'])
+        reset()
+        router.push('/login')
+      } else {
+        toast.error(response['message'] ?? 'Something went wrong!')
+      }
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      const err: AxiosError<BaseResponse> = error
+      toast.error(err.response.data.message)
+    }
+  }
 
   return (
     <motion.div
@@ -61,133 +119,56 @@ const CuratorRegisterForm = () => {
         <h5 className="text-xl font-semibold text-slate-700">
           Register as a <span className="text-primary-green">Curator</span>
         </h5>
-        <p className="text-sm text-slate-400 text-light">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit
-        </p>
       </div>
-      <form>
-        <div className="flex flex-col lg:flex-row lg:space-x-10">
-          <div className="flex-grow w-full lg:w-1/2">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="">
+          <div className="flex space-x-10">
             <RegisterInput
+              {...register('name', {
+                required: 'Name cannot be empty',
+              })}
+              error={errors.name && errors.name.message}
               placeholder="Type in the curator name"
               type="text"
               label="Curator Name"
+              className="flex-grow"
             />
-            <div>
-              <label className="flex flex-col mt-5 text-sm text-gray-500">
-                Where do you prefer to share
-              </label>
-              <Listbox value={selectedPlatform} onChange={setSelectedPlatform}>
-                <div className="flex items-center mt-3 mb-1 space-x-3">
-                  <Listbox.Button
-                    className={
-                      'px-5 py-1.5 bg-primary-blue bg-opacity-5 space-x-2 rounded-button flex items-center justify-center text-sm text-primary-blue'
-                    }
-                  >
-                    <div className="relative">
-                      <FontAwesomeIcon
-                        icon={platforms[selectedPlatform].icon as IconProp}
-                        color={platforms[selectedPlatform].color}
-                      />
-                    </div>
-                    <span>{platforms[selectedPlatform].name}</span>
-                    <span>
-                      <ChevronDownIcon className="w-5 h-5" />
-                    </span>
-                  </Listbox.Button>
-                  <button className="flex items-center justify-center text-gray-600 h-9 w-9 bg-gray-50 rounded-button">
-                    <PlusIcon className="w-4 h-4" />
-                  </button>
-                </div>
-                <Transition
-                  as={'div'}
-                  enter="transition ease-out duration-100"
-                  enterFrom="opacity-0 translate-y-1 scale-90"
-                  enterTo="opacity-100 translate-y-0 scale-100"
-                  leave="transition ease-in duration-100"
-                  leaveFrom="opacity-100 translate-y-0 scale-100"
-                  leaveTo="opacity-0 translate-y-1 scale-90"
-                  className={'relative z-10'}
-                >
-                  <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-sm bg-white border rounded-lg lg:w-1/2 border-opacity-20 border-primary-blue shadow-light max-h-60 focus:outline-none sm:text-sm">
-                    {platforms.map((platform, index) => {
-                      return (
-                        <Listbox.Option
-                          key={platform.id}
-                          className={({ active }) =>
-                            `${
-                              active
-                                ? 'text-primary-blue bg-primary-blue bg-opacity-5'
-                                : 'text-primary-blue'
-                            }
-                          cursor-pointer transition-all select-none relative py-2 pl-10 pr-4`
-                          }
-                          value={index}
-                        >
-                          {({ selected, active }) => (
-                            <>
-                              <span
-                                className={`${
-                                  selected ? 'font-medium' : 'font-normal'
-                                }  truncate space-x-2 flex items-center`}
-                              >
-                                <div className="relative">
-                                  <FontAwesomeIcon
-                                    className="w-4 h-4"
-                                    icon={platform.icon as IconProp}
-                                    color={platform.color}
-                                  />
-                                </div>
-                                <span>{platform.name}</span>
-                              </span>
-                              {selected ? (
-                                <span
-                                  className={`${
-                                    active
-                                      ? 'text-primary-blue'
-                                      : 'text-primary-blue'
-                                  }
-                                absolute inset-y-0 left-0 flex items-center pl-3`}
-                                >
-                                  <CheckIcon
-                                    className="w-5 h-5"
-                                    aria-hidden="true"
-                                  />
-                                </span>
-                              ) : null}
-                            </>
-                          )}
-                        </Listbox.Option>
-                      )
-                    })}
-                  </Listbox.Options>
-                </Transition>
-              </Listbox>
-              <RegisterInput
-                placeholder="Paste your spotify account url..."
-                type="text"
-              />
-            </div>
-          </div>
-          <div className="flex-grow w-full lg:w-1/2">
             <RegisterInput
-              className="mt-5 lg:mt-0"
+              {...register('email', {
+                required: 'Email cannot be empty',
+                pattern: {
+                  message: 'Invalid email address',
+                  value:
+                    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+                },
+              })}
               label="Email Address"
               placeholder="Type in the email address"
               type="email"
+              className="flex-grow"
             />
+          </div>
+          <div className="flex mt-5 space-x-10">
             <RegisterInput
-              className="mt-5"
+              {...register('password', {
+                required: 'Password cannot be empty',
+              })}
+              error={errors.password && errors.password.message}
               label="Password"
               showPassword
               placeholder="Enter a password"
               type="password"
+              className="flex-grow"
             />
             <RegisterInput
-              className="mt-5"
+              {...register('cpassword', {
+                required: 'Confirm password cannot be empty',
+              })}
+              error={errors.cpassword && errors.cpassword.message}
               label="Confirm Password"
               placeholder="Re-Enter the password"
               type="password"
+              className="flex-grow"
             />
           </div>
         </div>
@@ -273,8 +254,18 @@ const CuratorRegisterForm = () => {
                 </label>
               </div>
             </div>
-            <button className="px-20 w-full lg:w-4/12 py-3 font-normal text-white transition-all duration-150 bg-left bg-[length:200%_200%]  bg-no-repeat rounded-xl bg-gradient-to-r from-primary-blue to-[#08a881] hover:bg-right  active:scale-[99%]">
-              Apply
+            <button className="px-20 flex justify-center items-center w-full lg:w-5/12 h-[50px] font-normal text-white transition-all duration-150 bg-left bg-[length:200%_200%]  bg-no-repeat rounded-xl bg-gradient-to-r from-primary-blue to-[#08a881] hover:bg-right  active:scale-[99%]">
+              <div className="absolute">
+                {loading ? (
+                  <SpinnerCircular
+                    size={40}
+                    secondaryColor={'transparent'}
+                    color="#fff"
+                  />
+                ) : (
+                  'Apply'
+                )}
+              </div>
             </button>
           </div>
           <p className="mt-3 text-sm text-slate-500">

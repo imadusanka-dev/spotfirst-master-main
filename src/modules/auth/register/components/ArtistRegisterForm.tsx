@@ -108,9 +108,6 @@ const ArtistRegisterForm = () => {
           Register as an{' '}
           <span className="font-semibold text-primary-blue">Artist</span>
         </h5>
-        <p className="text-sm text-slate-400 text-light">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit
-        </p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="">

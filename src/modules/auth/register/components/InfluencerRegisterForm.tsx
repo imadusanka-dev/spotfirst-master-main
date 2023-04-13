@@ -23,9 +23,6 @@ const InfluencerRegisterForm = () => {
           Register as an{' '}
           <span className="text-primary-magenta">Influencer</span>
         </h5>
-        <p className="text-sm text-slate-400 text-light">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit
-        </p>
       </div>
       <form>
         <div className="flex flex-col lg:flex-row lg:space-x-10">

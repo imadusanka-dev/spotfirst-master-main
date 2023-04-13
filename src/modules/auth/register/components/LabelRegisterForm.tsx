@@ -112,9 +112,6 @@ const LabelRegisterForm = () => {
         <h5 className="text-xl font-semibold text-slate-700">
           Register a <span className="text-primary-yellow">Label</span>
         </h5>
-        <p className="text-sm text-slate-400 text-light">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit
-        </p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="">
