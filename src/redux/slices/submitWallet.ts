@@ -25,13 +25,6 @@ const steps = [
     step: 2,
     completed: false,
   },
-  {
-    name: 'Final',
-    description: 'Complete the payment process',
-    href: '#',
-    step: 3,
-    completed: false,
-  },
 ]
 
 export interface SubmitSongState {

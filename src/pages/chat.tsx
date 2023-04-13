@@ -54,6 +54,7 @@ const MessagesInbox = ({ router: { query = {} } = {} }: any) => {
     if (selectedUser?.id && authState?.me?.id) {
       fetchChatHistory()
     }
+    return () => setChat([])
   }, [selectedUser?.id, authState?.me?.id])
 
   useEffect(() => {
@@ -64,11 +65,13 @@ const MessagesInbox = ({ router: { query = {} } = {} }: any) => {
     if (selectedArtist) {
       setSelectedUser(selectedArtist)
     }
-  }, [setSelectedUser])
-
-  useEffect(() => {}, [selectedUser, selectedUser?.id, authState?.me?.id])
+  }, [])
 
   useEffect(() => {
+    const HandleReceiveChat = (message: IMsg) => {
+      setChat((prevChat) => [...prevChat, message])
+    }
+
     if (chatSocketConnection) {
       chatSocketConnection.emit('joinRoom', {
         receiverId: selectedUser?.id,
@@ -79,10 +82,7 @@ const MessagesInbox = ({ router: { query = {} } = {} }: any) => {
         console.log('Room joined', data)
       })
 
-      chatSocketConnection.on('receiveChat', (message) => {
-        chat.push(message)
-        fetchChatHistory()
-      })
+      chatSocketConnection.on('receiveChat', HandleReceiveChat)
     }
 
     return () => {
@@ -94,6 +94,8 @@ const MessagesInbox = ({ router: { query = {} } = {} }: any) => {
   const fetchChatHistory = async () => {
     try {
       const res = await COMMON_API.getChatHistory(selectedUser?.id)
+
+      console.log('res', res)
       setChat((prevChat) => [...prevChat, ...res.payload])
     } catch (error) {
       toast.error('chat history error')
@@ -119,8 +121,6 @@ const MessagesInbox = ({ router: { query = {} } = {} }: any) => {
         senderId: authState?.me?.id,
         receiverId: selectedUser?.id,
       })
-      // update chat state with the new message
-      fetchChatHistory()
     }
     // focus after click
     inputRef.current.focus()
@@ -188,7 +188,7 @@ const MessagesInbox = ({ router: { query = {} } = {} }: any) => {
             {/* Begin Chat view */}
             <div className="flex flex-col px-3 flex-grow h-full min-h-max overflow-y-scroll rounded-lg">
               {chat.length ? (
-                chat.map((chat, i) => (
+                chat.reverse().map((chat, i) => (
                   <div
                     key={'msg_' + i}
                     style={{ maxWidth: '45%', minWidth: '20%' }}
@@ -217,9 +217,7 @@ const MessagesInbox = ({ router: { query = {} } = {} }: any) => {
                   type="text"
                   value={msg}
                   placeholder={'Type a message...'}
-                  onChange={(e) => {
-                    setMsg(e.target.value)
-                  }}
+                  onChange={(e) => setMsg(e.target.value)}
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       sendMessage()

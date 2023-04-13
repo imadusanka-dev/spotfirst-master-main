@@ -29,7 +29,7 @@ const CreditsPage = () => {
       </div>
       <section>
         <div className={classNames('flex  h-full space-x-5')}>
-          <SubmitWalletSteps />
+          {step === 1 || step === 2 ? <SubmitWalletSteps /> : null}
           {step === 1 && (
             <StepOne
               tokens={tokens}
@@ -41,6 +41,7 @@ const CreditsPage = () => {
             />
           )}
           {step === 2 && <StepTwo tokens={tokens} />}
+
           {step === 3 && <StepThree />}
         </div>
       </section>

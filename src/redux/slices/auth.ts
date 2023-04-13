@@ -96,6 +96,7 @@ export interface AuthSliceState {
   loading: AuthStates
   me?: {
     id?: string
+    uuid?: string
     name?: string
     email?: string
     profilePicture?: string

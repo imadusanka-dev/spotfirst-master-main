@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import toast from 'react-hot-toast'
+import { SpinnerCircular } from 'spinners-react'
 import { STRIPE_PAYMENT_API } from 'data'
 import { useAppDispatch, useAppSelector } from 'core/hooks/useRedux'
 import { setCompletedStep, setStep } from 'redux/slices/submitWallet'
-import toast from 'react-hot-toast'
 
 export default function CheckoutForm({ tokens }) {
   const [succeeded, setSucceeded] = useState(false)
   const [error, setError] = useState(null)
   const [processing, setProcessing] = useState<boolean>(false)
   const [disabled, setDisabled] = useState(true)
-  const [clientSecret, setClientSecret] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const authState = useAppSelector((state) => state.authReducer)
 
@@ -24,6 +25,7 @@ export default function CheckoutForm({ tokens }) {
   }
 
   const handleSubmit = async (ev) => {
+    setLoading(true)
     setProcessing(true)
     ev.preventDefault()
 
@@ -35,6 +37,7 @@ export default function CheckoutForm({ tokens }) {
     const result = await stripe.createToken(card)
 
     if (result.error) {
+      setLoading(false)
       console.log(result.error.message)
       toast.error(`Something went wrong - ${result.error.message}`)
     } else {
@@ -43,20 +46,22 @@ export default function CheckoutForm({ tokens }) {
         currency: 'eur',
         tokens: authState?.me?.tokens,
         cardToken: result.token.id,
-        userId: authState?.me?.id,
+        userId: authState?.me?.uuid,
       }
       const res = await STRIPE_PAYMENT_API.makePayment(data)
       setProcessing(false)
       if (res.success) {
+        setSucceeded(true)
         dispatch(
           setCompletedStep({
             step: 2,
             completed: true,
           })
         )
-        dispatch(setStep(3))
+        setLoading(false)
       } else {
         toast.error('Something went wrong!')
+        setLoading(false)
       }
     }
   }
@@ -70,7 +75,15 @@ export default function CheckoutForm({ tokens }) {
             className="min-h-[40px] flex items-center justify-center shadow-none min-w-full hover:bg-primary-blue-dark text-md bg-primary-blue rounded-full text-white"
             onClick={handleSubmit}
           >
-            Pay Now
+            {loading ? (
+              <SpinnerCircular
+                size={30}
+                secondaryColor={'transparent'}
+                color="#fff"
+              />
+            ) : (
+              'Pay Now'
+            )}
           </button>
         </div>
 
@@ -82,12 +95,7 @@ export default function CheckoutForm({ tokens }) {
         )}
         {/* Show a success message upon completion */}
         <p className={succeeded ? 'result-message' : 'result-message hidden'}>
-          Payment succeeded, see the result in your
-          <a href={`https://dashboard.stripe.com/test/payments`}>
-            {' '}
-            Stripe dashboard.
-          </a>{' '}
-          Refresh the page to pay again.
+          Payment succeeded. Refresh the page to pay again.
         </p>
       </div>
     </div>
