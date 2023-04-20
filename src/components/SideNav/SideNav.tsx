@@ -109,6 +109,44 @@ const labelRoutes = [
   },
 ]
 
+const curatorRoutes = [
+  {
+    route: '/curator',
+    title: 'Home',
+    icon: Home,
+  },
+  {
+    route: '/curator/new-submissions',
+    title: 'New Submissions',
+    icon: Star,
+  },
+  {
+    route: '/curator/approved',
+    title: 'Approved',
+    icon: Check,
+  },
+  {
+    route: '/curator/rejected',
+    title: 'Rejected',
+    icon: XOctagon,
+  },
+  {
+    route: '/curator/submit',
+    title: 'Submit A Song',
+    icon: Star,
+  },
+  {
+    route: '/curator/previous-submissions',
+    title: 'Previous Submissions',
+    icon: Archive,
+  },
+  {
+    route: '/chat',
+    title: 'Chat',
+    icon: MessageCircle,
+  },
+]
+
 const SideNav: FC<SideNavProps> = ({ isVisible = true, role }) => {
   const router = useRouter()
 
@@ -161,6 +199,16 @@ const SideNav: FC<SideNavProps> = ({ isVisible = true, role }) => {
 
             {role === 'ROLE_LABEL' &&
               labelRoutes.map((item, index) => (
+                <SideNavLink
+                  key={index}
+                  href={item.route}
+                  title={item.title}
+                  icon={item.icon}
+                />
+              ))}
+
+            {role === 'ROLE_CURATOR' &&
+              curatorRoutes.map((item, index) => (
                 <SideNavLink
                   key={index}
                   href={item.route}

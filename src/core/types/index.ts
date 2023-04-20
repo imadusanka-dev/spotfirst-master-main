@@ -1,4 +1,4 @@
-export type ROLE = 'ROLE_ADMIN' | 'ROLE_ARTIST' | 'ROLE_LABEL'
+export type ROLE = 'ROLE_ADMIN' | 'ROLE_ARTIST' | 'ROLE_LABEL' | 'ROLE_CURATOR'
 
 export interface Submission {
   parentId: number

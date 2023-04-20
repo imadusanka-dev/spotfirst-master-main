@@ -23,7 +23,7 @@ const Index: FC<IndexProps> = ({ role }) => {
       }
 
       if (role === 'ROLE_CURATOR') {
-        router.replace('/label')
+        router.replace('/curator')
       }
     }, 1000)
   }, [role, router])
