@@ -18,17 +18,6 @@ interface ViewResponsesProps {
 
 export const ViewResponses: FC<ViewResponsesProps> = ({ submission }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [submissions, setSubmissions] = useState<Submission[]>([])
-
-  useEffect(() => {
-    // if (submission._id) {
-    //   ARTIST_API.previousSubmissionsOfSong(submission._id, 1, 10).then(
-    //     (res) => {
-    //       setSubmissions(res.payload)
-    //     }
-    //   )
-    // }
-  }, [submission._id])
 
   function closeModal() {
     setIsOpen(false)
@@ -112,9 +101,11 @@ export const ViewResponses: FC<ViewResponsesProps> = ({ submission }) => {
                     <div className="flex flex-col justify-center w-full ml-4 space-y-2">
                       <div className="flex items-center space-x-1">
                         <Disc className="text-primary-blue-dark" size={14} />
-                        <p className="text-primary-blue-dark">
-                          {submission.trackTitle}
-                        </p>
+                        <a href={submission.songUrl} target="_blank">
+                          <p className="text-primary-blue-dark">
+                            {submission.trackTitle}
+                          </p>
+                        </a>
                       </div>
                       <div className="flex items-center space-x-1">
                         <User className="text-gray-500" size={14} />
@@ -127,8 +118,9 @@ export const ViewResponses: FC<ViewResponsesProps> = ({ submission }) => {
                         <p className="text-xs text-gray-500">
                           Responses{' '}
                           {
-                            submissions.filter(
-                              (item) => item.status !== 'PENDING'
+                            submission.curators?.filter(
+                              (item) =>
+                                item.approvalStatus[0].status !== 'PENDING'
                             ).length
                           }
                         </p>
@@ -136,7 +128,7 @@ export const ViewResponses: FC<ViewResponsesProps> = ({ submission }) => {
                       <div className="flex items-center space-x-1">
                         <CheckSquare className="text-gray-500" size={14} />
                         <p className="text-xs text-gray-500">
-                          Total Submissions {submissions.length}
+                          Total Submissions {submission.curators?.length}
                         </p>
                       </div>
                     </div>

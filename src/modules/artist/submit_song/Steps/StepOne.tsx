@@ -67,6 +67,8 @@ const StepOne: FC = () => {
 
   const waveContainer = useRef<HTMLDivElement>(null)
 
+  console.log('---------wave container', waveContainer)
+
   const onHashChangeStart = (event) => {
     const path: string = event
     const hash = path.split('#')[1]
@@ -83,6 +85,7 @@ const StepOne: FC = () => {
 
   useEffect(() => {
     const initWaveSurfer = async () => {
+      console.log('--------wave surfer')
       const WaveSurfer = (await import('wavesurfer.js')).default
       const RegionPlugin = (
         await import('wavesurfer.js/dist/plugin/wavesurfer.regions.js')
@@ -109,9 +112,14 @@ const StepOne: FC = () => {
           }),
         ],
       })
-
       setWaveSurfer(_wavesurfer)
     }
+
+    console.log(
+      '--------',
+      waveContainer.current,
+      waveContainer.current?.children?.length
+    )
 
     return () => {
       if (

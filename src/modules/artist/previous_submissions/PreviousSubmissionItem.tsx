@@ -114,7 +114,7 @@ export const PreviousSubmissionItem: FC<PreviousSubmissionItemProps> = ({
                   <div className="flex items-center space-x-1">
                     <FileText className="text-slate-500" size={14} />
                     <p className="text-xs text-slate-500">
-                      Total Submissions: {submission.totalSubmission}
+                      Total Submissions: {submission.curators?.length}
                     </p>
                   </div>
                   <div className="flex items-center space-x-1">
@@ -124,12 +124,6 @@ export const PreviousSubmissionItem: FC<PreviousSubmissionItemProps> = ({
                     </div>
                     <ViewResponses submission={submission} />
                   </div>
-                  {/* <div className="flex items-center space-x-1">
-                          <CheckSquare className="text-slate-500" size={14} />
-                          <p className="text-xs text-slate-500">
-                            Total Submissions 1
-                          </p>
-                        </div> */}
                 </div>
               </div>
             </div>
